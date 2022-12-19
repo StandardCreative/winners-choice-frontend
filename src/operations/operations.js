@@ -31,6 +31,7 @@ const getContractInstance = () => {
 
 export const parseRpcCallError = (error) => {
   const res = { ...cfg.RpcCallErrorInitVals };
+  let shouldLogErr = true;
 
   let txCodeObj = cfg.txCodes.find((x) => x.code === error.code);
   if (txCodeObj) {
@@ -48,7 +49,19 @@ export const parseRpcCallError = (error) => {
   res.method = error.method ?? "";
   res.fullMsg = error.message ?? `${error}`;
 
-  console.log("got error:", res);
+  //contract-specific errors
+  if (res.fullMsg.indexOf("not yet unlocked") + 1) {
+    res.userMsg = "You are not yet unlocked, please wait";
+    shouldLogErr = false;
+  } else if (res.fullMsg.indexOf("ERC721: invalid token ID") + 1) {
+    res.userMsg = "no owner"
+    shouldLogErr = false;
+  } else if (res.fullMsg.indexOf("already minted") + 1) {
+    res.userMsg = "This NFKeeTee was already meow-nted, try another!"
+    shouldLogErr = false;
+  }
+
+  if (shouldLogErr) console.log("got error:", res);
   return res;
 };
 
@@ -59,8 +72,8 @@ export const getOwners = async (setNftOwners) => {
     const owner = await sendReadTx("ownerOf", {
       tokenIdStr: (i + 1).toString(),
     });
-    if (owner.indexOf("invalid token ID") !== -1) {
-      console.log("no owner for ", i + 1, owner);
+    if (owner.indexOf("ERC721: invalid token ID") !== -1) {
+      //console.log("no owner for ", i + 1, owner);
       owners.push("Not yet minted");
     } else owners.push(owner);
   }
@@ -87,7 +100,8 @@ export const sendReadTx = async (funcName, vals) => {
     return res;
   } catch (error) {
     const errObj = parseRpcCallError(error);
-    console.log(errObj);
+    if (!["no owner"].includes(errObj.userMsg))
+      console.log(errObj);
     return errObj.fullMsg; //TODO for now we use error message to determine if there's no owner
   }
 };
