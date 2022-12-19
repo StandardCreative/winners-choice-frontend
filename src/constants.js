@@ -54,5 +54,5 @@ export const mediaPrefix = "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggx
 export const mediaSuffix = ".jpeg"
 export const nNfts = tokenIds.length
 
-export const PLACEHOLDER_OWNER = "Fetching owner..."
+export const PLACEHOLDER_OWNER = ""//"Fetching owner..."
 export const initOwners = tokenIds.map(()=>PLACEHOLDER_OWNER)
