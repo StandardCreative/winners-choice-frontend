@@ -8,8 +8,8 @@ export const supportedNetworks = [
     contractAddress: "",
   },
   {
-    name: "Local",
-    id: "31337",
+    name: "Local (with chain id 1337)",
+    id: "1337",
     contractAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
   },
 ];

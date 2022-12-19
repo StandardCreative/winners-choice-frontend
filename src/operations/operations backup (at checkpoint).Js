@@ -59,10 +59,7 @@ export const parseRpcCallError = (error) => {
   } else if (res.fullMsg.indexOf("already minted") + 1) {
     res.userMsg = "This NFKeeTee was already meow-nted, try another!"
     shouldLogErr = false;
-  } else if (res.fullMsg.indexOf("mint allowance exceeded") + 1) {
-    res.userMsg = "Only 1 NFKeeTee can be minted per whitelisted wallet"
-    shouldLogErr = false;
-  }
+  } 
 
   if (shouldLogErr) console.log("got error:", res);
   return res;
