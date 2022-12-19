@@ -14,7 +14,8 @@ function App() {
   const [accounts, setAccounts] = useState([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const showMint = true;
-  const mintCb = (vals) => ops.sendTx("safeMint", vals, enqueueSnackbar);
+  const mintCb = (vals) => ops.sendReadTx("ownerOf", vals);
+  //const mintCb = (vals) => ops.sendTx("safeMint", vals, enqueueSnackbar);
 
   return (
     <div className="App">

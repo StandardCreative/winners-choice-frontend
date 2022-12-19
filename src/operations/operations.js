@@ -52,9 +52,31 @@ export const parseRpcCallError = (error) => {
   return res;
 };
 
-// export const sendTxSync = (funcName, vals, enqueueSnackbar) => {
-//   sendTx(funcName, vals, enqueueSnackbar)
-// }
+
+export const sendReadTx = async (funcName, vals) => {
+  console.log("sendReadtx: ", funcName);
+  try {
+    const contract = getContractInstance();
+    let resPromise;
+    switch (funcName) {
+      case "ownerOf":
+        console.log("will try to get owner of tokenId ", vals.tokenIdStr);
+        resPromise = contract.ownerOf(+vals.tokenIdStr);
+        break;
+      default:
+        throw new Error("Unsupported operation");
+    }
+
+    const res = await resPromise;
+    console.log("res", res);
+    return res
+  } catch (error) {
+    const errObj = parseRpcCallError(error);
+    console.log(errObj);
+    return 
+  }
+}
+
 export const sendTx = async (funcName, vals, enqueueSnackbar) => {
   console.log("sendtx: ", funcName);
   try {
@@ -62,9 +84,10 @@ export const sendTx = async (funcName, vals, enqueueSnackbar) => {
     let txPromise;
     switch (funcName) {
       case "safeMint":
-        console.log("will try to mint tokenId ", vals);
+        console.log("will try to mint tokenId ", vals.tokenIdStr);
         txPromise = contract.safeMint(+vals.tokenIdStr);
         break;
+      
       default:
         throw new Error("Unsupported operation");
     }
