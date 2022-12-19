@@ -16,11 +16,12 @@ import { useSnackbar } from "notistack";
 import { useState } from "react";
 
 import * as cfg from "../constants";
+import { getOwners } from "../operations/operations";
 const pages = ["Products", "Pricing", "Blog"];
 
-function Header({ accounts, setAccounts }) {
+function Header({ accounts, setAccounts, setNftOwners }) {
   const isConnected = Boolean(accounts[0]);
-  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   // Check if we are on a supported network
   const checkNetwork = () => {
@@ -48,8 +49,9 @@ function Header({ accounts, setAccounts }) {
       const newAccs = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      const networkOk = checkNetwork()
+      const networkOk = checkNetwork();
       setAccounts(newAccs);
+      getOwners(setNftOwners);
     } catch (err) {
       console.log(err);
     }

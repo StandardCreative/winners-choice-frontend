@@ -52,6 +52,21 @@ export const parseRpcCallError = (error) => {
   return res;
 };
 
+export const getOwners = async (setNftOwners) => {
+  const owners = [];
+  for (let i = 0; i < cfg.nNfts; i++) {
+    //TODO parallelize
+    const owner = await sendReadTx("ownerOf", {
+      tokenIdStr: (i + 1).toString(),
+    });
+    if (owner.indexOf("invalid token ID") !== -1) {
+      console.log("no owner for ", i + 1, owner);
+      owners.push("Not yet minted");
+    } else owners.push(owner);
+  }
+  setNftOwners(owners);
+  console.log("got owners:", owners);
+};
 
 export const sendReadTx = async (funcName, vals) => {
   console.log("sendReadtx: ", funcName);
@@ -69,13 +84,13 @@ export const sendReadTx = async (funcName, vals) => {
 
     const res = await resPromise;
     console.log("res", res);
-    return res
+    return res;
   } catch (error) {
     const errObj = parseRpcCallError(error);
     console.log(errObj);
-    return 
+    return errObj.fullMsg; //TODO for now we use error message to determine if there's no owner
   }
-}
+};
 
 export const sendTx = async (funcName, vals, enqueueSnackbar) => {
   console.log("sendtx: ", funcName);
@@ -87,7 +102,7 @@ export const sendTx = async (funcName, vals, enqueueSnackbar) => {
         console.log("will try to mint tokenId ", vals.tokenIdStr);
         txPromise = contract.safeMint(+vals.tokenIdStr);
         break;
-      
+
       default:
         throw new Error("Unsupported operation");
     }

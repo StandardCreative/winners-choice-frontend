@@ -4,6 +4,7 @@ import { useState } from "react";
 import "./App.css";
 
 import * as ops from "./operations/operations";
+import * as cfg from "./constants";
 
 import { ContractCallForm } from "./components/ContractCallForm";
 import Header from "./components/Header";
@@ -12,6 +13,7 @@ import NFTGallery from "./components/NFTGallery";
 
 function App() {
   const [accounts, setAccounts] = useState([]);
+  const [nftOwners, setNftOwners] = useState(cfg.initOwners);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const showMint = true;
   const mintCb = (vals) => ops.sendReadTx("ownerOf", vals);
@@ -19,8 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header accounts={accounts} setAccounts={setAccounts} />
-      {false && <ContractCallForm onSubmit={() => {}} account={accounts[0]} />}
+      <Header accounts={accounts} setAccounts={setAccounts} setNftOwners={setNftOwners} />
       {showMint && <MintForm onSubmit={mintCb} account={accounts[0]} />}
       <NFTGallery/>
     </div>

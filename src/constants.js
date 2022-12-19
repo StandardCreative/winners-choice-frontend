@@ -52,3 +52,7 @@ export const txCodes = [
 export const tokenIds = "1 2 3 4 5 6 7 8 9 10 11 12".split(" ");
 export const mediaPrefix = "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"//"..\\..\\NFKeetees images\\";
 export const mediaSuffix = ".jpeg"
+export const nNfts = tokenIds.length
+
+export const PLACEHOLDER_OWNER = "Fetching owner..."
+export const initOwners = tokenIds.map(()=>PLACEHOLDER_OWNER)
