@@ -30,13 +30,16 @@ const ExpandMore = styled((props) => {
 
 export default function NFTCard({ tokenId, owner }) {
   const [expanded, setExpanded] = React.useState(false);
+  const ownerStr = owner.startsWith("0x")
+    ? `Owner: ${owner.slice(0, 4)}...${owner.slice(-4)}`
+    : owner;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ maxWidth: 345, mt:3 }}>
+    <Card sx={{ maxWidth: 345, mt: 3 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="nfkeetee">
@@ -49,7 +52,7 @@ export default function NFTCard({ tokenId, owner }) {
           </IconButton>
         }
         title={"NFKeeTees #" + tokenId}
-        subheader={owner}
+        subheader={ownerStr}
       />
       <CardMedia
         component="img"

@@ -17,7 +17,7 @@ import { useState } from "react";
 
 import * as cfg from "../constants";
 import { getOwners } from "../operations/operations";
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Home", "Meow", "About"];
 
 function Header({ accounts, setAccounts, setNftOwners }) {
   const isConnected = Boolean(accounts[0]);
