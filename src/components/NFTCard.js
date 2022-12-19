@@ -28,7 +28,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function NFTCard({ tokenId }) {
+export default function NFTCard({ tokenId, owner }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -36,7 +36,7 @@ export default function NFTCard({ tokenId }) {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, mt:3 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="nfkeetee">
@@ -48,18 +48,23 @@ export default function NFTCard({ tokenId }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={"NFKeeTees #"+tokenId}
-        subheader="meow"
+        title={"NFKeeTees #" + tokenId}
+        subheader={owner}
       />
       <CardMedia
         component="img"
         height="194"
         image={cfg.mediaPrefix + tokenId + cfg.mediaSuffix}
-        alt={"NFKeeTees #"+tokenId}
+        alt={"NFKeeTees #" + tokenId}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-        These keetees are quite naughty, but they make up for that with cuteness. They love and take care of each other by giving each other cat baths, and never fight... wait, scratch that... sometimes fight a little but quickly make up and go back to snuggling. Did you catch the pun there? If so, "pet" yourself on the back and get yourself an NFKeeTee!
+          These keetees are quite naughty, but they make up for that with
+          cuteness. They love and take care of each other by giving each other
+          cat baths, and never fight... wait, scratch that... sometimes fight a
+          little but quickly make up and go back to snuggling. Did you catch the
+          pun there? If so, "pet" yourself on the back and get yourself an
+          NFKeeTee!
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -82,13 +87,16 @@ export default function NFTCard({ tokenId }) {
         <CardContent>
           <Typography paragraph>How to mint:</Typography>
           <Typography paragraph>
-            Easy, find the NFKeeTee you want, put its number in the box above, and click Mint.
+            Easy, find the NFKeeTee you want, put its number in the box above,
+            and click Mint.
           </Typography>
           <Typography paragraph>
-            Note: you have to be on the super-exclusive whitelist to be able to mint, and even then you can mint only one. 
+            Note: you have to be on the super-exclusive whitelist to be able to
+            mint, and even then you can mint only one.
           </Typography>
           <Typography paragraph>
-            The further down the list you are, the longer you will need to wait to be able to mint. Yes, we know, life isn't always fair!
+            The further down the list you are, the longer you will need to wait
+            to be able to mint. Yes, we know, life isn't always fair!
           </Typography>
         </CardContent>
       </Collapse>

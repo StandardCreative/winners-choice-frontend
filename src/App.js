@@ -16,14 +16,14 @@ function App() {
   const [nftOwners, setNftOwners] = useState(cfg.initOwners);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const showMint = true;
-  const mintCb = (vals) => ops.sendReadTx("ownerOf", vals);
-  //const mintCb = (vals) => ops.sendTx("safeMint", vals, enqueueSnackbar);
+  //const mintCb = (vals) => ops.sendReadTx("ownerOf", vals);
+  const mintCb = (vals) => ops.sendTx("safeMint", vals, enqueueSnackbar);
 
   return (
     <div className="App">
       <Header accounts={accounts} setAccounts={setAccounts} setNftOwners={setNftOwners} />
-      {showMint && <MintForm onSubmit={mintCb} account={accounts[0]} />}
-      <NFTGallery/>
+      {showMint && <MintForm onSubmit={mintCb} account={accounts[0]} setNftOwners={setNftOwners} />}
+      <NFTGallery nftOwners={nftOwners} />
     </div>
   );
 }
