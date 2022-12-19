@@ -1,0 +1,7 @@
+for kt1
+ipfs://bafybeifmoil3utn2u76j2q523ccatzqhme4n5qfz7m5nzjanm2k2z2rbv4
+https://nftstorage.link/ipfs/bafybeifmoil3utn2u76j2q523ccatzqhme4n5qfz7m5nzjanm2k2z2rbv4
+
+for the 12
+ipfs://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq/1.jpeg
+https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/1.jpeg

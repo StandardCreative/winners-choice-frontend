@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSnackbar } from "notistack";
+import { useState } from "react";
+
+import "./App.css";
+
+import * as ops from "./operations/operations";
+
+import { ContractCallForm } from "./components/ContractCallForm";
+import Header from "./components/Header";
+import { MintForm } from "./components/MintForm";
+import NFTGallery from "./components/NFTGallery";
 
 function App() {
+  const [accounts, setAccounts] = useState([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const showMint = true;
+  const mintCb = (vals) => ops.sendTx("safeMint", vals, enqueueSnackbar);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header accounts={accounts} setAccounts={setAccounts} />
+      {false && <ContractCallForm onSubmit={() => {}} account={accounts[0]} />}
+      {showMint && <MintForm onSubmit={mintCb} account={accounts[0]} />}
+      <NFTGallery/>
     </div>
   );
 }
