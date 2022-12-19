@@ -5,7 +5,7 @@ import NFTCard from "./NFTCard";
 const NFTGallery = ({ nftOwners }) => {
   return (
     <>
-      <Typography variant="h6">NFKeeTees Gallery</Typography>
+      <Typography variant="h4" color="primary" textAlign="center">NFKeeTees Gallery</Typography>
       <Stack
         direction="row"
         flexWrap="wrap"
