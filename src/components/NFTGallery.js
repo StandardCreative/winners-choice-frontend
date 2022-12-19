@@ -6,7 +6,7 @@ const NFTGallery = () => {
   return (
     <>
       <Typography variant="h6">NFKeeTees Gallery</Typography>
-      <Stack>
+      <Stack direction="row" flexWrap="wrap" justifyContent="center" sx={{ gridColumnGap: "16px" }}>
         {cfg.tokenIds.map((tokenId) => {
           return <NFTCard key={tokenId} tokenId={tokenId}></NFTCard>;
         })}

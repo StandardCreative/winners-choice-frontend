@@ -39,8 +39,8 @@ export default function NFTCard({ tokenId }) {
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="nfkeetee">
+            KT
           </Avatar>
         }
         action={
@@ -48,20 +48,18 @@ export default function NFTCard({ tokenId }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={"NFKeeTees #"+tokenId}
+        subheader="meow"
       />
       <CardMedia
         component="img"
         height="194"
         image={cfg.mediaPrefix + tokenId + cfg.mediaSuffix}
-        alt="Paella dish"
+        alt={"NFKeeTees #"+tokenId}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+        These keetees are quite naughty, but they make up for that with cuteness. They love and take care of each other by giving each other cat baths, and never fight... wait, scratch that... sometimes fight a little but quickly make up and go back to snuggling. Did you catch the pun there? If so, "pet" yourself on the back and get yourself an NFKeeTee!
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -82,32 +80,15 @@ export default function NFTCard({ tokenId }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
+          <Typography paragraph>How to mint:</Typography>
           <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and
-            set aside for 10 minutes.
+            Easy, find the NFKeeTee you want, put its number in the box above, and click Mint.
           </Typography>
           <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-            over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-            stirring occasionally until lightly browned, 6 to 8 minutes.
-            Transfer shrimp to a large plate and set aside, leaving chicken and
-            chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes,
-            onion, salt and pepper, and cook, stirring often until thickened and
-            fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2
-            cups chicken broth; bring to a boil.
+            Note: you have to be on the super-exclusive whitelist to be able to mint, and even then you can mint only one. 
           </Typography>
           <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is
-            absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved
-            shrimp and mussels, tucking them down into the rice, and cook again
-            without stirring, until mussels have opened and rice is just tender,
-            5 to 7 minutes more. (Discard any mussels that don&apos;t open.)
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then
-            serve.
+            The further down the list you are, the longer you will need to wait to be able to mint. Yes, we know, life isn't always fair!
           </Typography>
         </CardContent>
       </Collapse>
