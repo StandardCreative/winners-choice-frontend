@@ -1,18 +1,18 @@
-export const DUR_SNACKBAR_TX = 60000; //in my ts app I used 60
-export const DUR_SNACKBAR = 15000;
+export const DUR_SNACKBAR_TX = 60000 //in my ts app I used 60
+export const DUR_SNACKBAR = 15000
 
 export const supportedNetworks = [
   {
     name: "Goerli",
     id: "5",
-    contractAddress: "",
+    contractAddress: "0x3aF9F0408456b4296A74ad42bAc3879750aC1842", //"0x589702910E28a5D6F3c08DB3a48833EF0174B78c",
   },
   {
     name: "Local (with chain id 1337)",
     id: "1337",
     contractAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
   },
-];
+]
 
 //   export enum RpcCallErrorStatus {
 //     UNDEFINED,
@@ -28,7 +28,7 @@ export const RpcCallErrorInitVals = {
   fullMsg: "",
   userMsg: "",
   level: "",
-};
+}
 
 export const txCodes = [
   { code: "ACTION_REJECTED", userMsg: "Tx rejected by user", level: "info" },
@@ -47,12 +47,19 @@ export const txCodes = [
     userMsg: "Network is not responding to requests",
     level: "error",
   },
-];
+  {
+    code: "INVALID_ARGUMENT", //when I put an empty string for contract address
+    //or enter invalid entry for an input field
+    userMsg: "Trying to send invalid data",
+    level: "error",
+  },
+]
 
-export const tokenIds = "1 2 3 4 5 6 7 8 9 10 11 12".split(" ");
-export const mediaPrefix = "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"//"..\\..\\NFKeetees images\\";
+export const tokenIds = "1 2 3 4 5 6 7 8 9 10 11 12".split(" ")
+export const mediaPrefix =
+  "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/" //"..\\..\\NFKeetees images\\";
 export const mediaSuffix = ".jpeg"
 export const nNfts = tokenIds.length
 
-export const PLACEHOLDER_OWNER = ""//"Fetching owner..."
-export const initOwners = tokenIds.map(()=>PLACEHOLDER_OWNER)
+export const PLACEHOLDER_OWNER = "" //"Fetching owner..."
+export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)

@@ -1,51 +1,55 @@
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import { Formik } from "formik";
-import { useState } from "react";
-import { validateAddr } from "../utils/utils";
+import { Typography } from "@mui/material"
+import Button from "@mui/material/Button"
+import Stack from "@mui/material/Stack"
+import TextField from "@mui/material/TextField"
+import { Formik } from "formik"
+import { useState } from "react"
+import { validateAddr } from "../utils/utils"
 
 const MintFormInitVals = {
   tokenIdStr: "",
-};
+}
 
 const validate = (values) => {
-  console.log("validate");
-  const errors = {};
-  return errors;
+  console.log("validate")
+  const errors = {}
+  return errors
   if (!values.tokenIdStr) {
-    errors.tokenIdStr = "Required";
-  } else errors.tokenIdStr = validateAddr(values.tokenIdStr);
+    errors.tokenIdStr = "Required"
+  } else errors.tokenIdStr = validateAddr(values.tokenIdStr)
 
   //now need to remove properties of errors for which there were no errors,
   //otherwise formik won't submit the form (can't leave them even if they are undefined)
-  Object.keys(errors).forEach((k) => !errors[k] && delete errors[k]);
-  return errors;
-};
+  Object.keys(errors).forEach((k) => !errors[k] && delete errors[k])
+  return errors
+}
 
 export const MintForm = ({ onSubmit, account }) => {
-  const [showErrs, setShowErrs] = useState(false);
-  const isDisabled = !Boolean(account);
+  const [showErrs, setShowErrs] = useState(false)
+  const isDisabled = !Boolean(account)
   return (
     <>
       <Formik
         initialValues={MintFormInitVals}
         validate={validate}
         onSubmit={(values, actions) => {
-          console.log("submitting");
-          onSubmit(values);
-          actions.setSubmitting(false);
+          console.log("submitting")
+          onSubmit(values)
+          actions.setSubmitting(false)
         }}
       >
         {(formik) => (
           <form
             onSubmit={(e) => {
-              setShowErrs(true);
-              formik.handleSubmit(e);
+              setShowErrs(true)
+              formik.handleSubmit(e)
             }}
             style={{ margin: "32px" }}
           >
             <Stack gap="0px">
+              <Typography textAlign="center" marginBottom="16px" fontWeight="bold">
+                Test mode: to reset the whitelist enter it in the form (example: 0xabc, 0x123, ...)
+              </Typography>
               <Stack
                 direction="row"
                 flexWrap="wrap"
@@ -73,5 +77,5 @@ export const MintForm = ({ onSubmit, account }) => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}

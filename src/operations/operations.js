@@ -31,7 +31,6 @@ const getContractInstance = () => {
 
 export const parseRpcCallError = (error) => {
   const res = { ...cfg.RpcCallErrorInitVals }
-  let shouldLogErr = true
 
   let txCodeObj = cfg.txCodes.find((x) => x.code === error.code)
   if (txCodeObj) {
@@ -49,31 +48,35 @@ export const parseRpcCallError = (error) => {
   res.method = error.method ?? ""
   res.fullMsg = error.message ?? `${error}`
 
+  //some errors can be recognized not by the code but by a part of the message
+  if (res.fullMsg.indexOf("xpected nonce to be") + 1) {
+    const ind = res.fullMsg.indexOf("xpected nonce to be")
+    const indPt = res.fullMsg.indexOf(".", ind)
+    const sentence = res.fullMsg.slice(ind, indPt)
+    res.userMsg = "Set nonce: e" + sentence
+  }
   //contract-specific errors
-  if (res.fullMsg.indexOf("not yet unlocked") + 1) {
+  else if (res.fullMsg.indexOf("not yet unlocked") + 1) {
     res.userMsg = "You are not yet unlocked, please wait"
-    shouldLogErr = false
   } else if (res.fullMsg.indexOf("ERC721: invalid token ID") + 1) {
     res.userMsg = "no owner"
-    shouldLogErr = false
   } else if (res.fullMsg.indexOf("already minted") + 1) {
     res.userMsg = "This NFKeeTee was already meow-nted, try another!"
-    shouldLogErr = false
   } else if (res.fullMsg.indexOf("mint allowance exceeded") + 1) {
-    res.userMsg = "Only 1 NFKeeTee can be minted per whitelisted wallet"
-    shouldLogErr = false
-  }
-
-  if (shouldLogErr) console.log("got error:", res)
+    res.userMsg = "You can't have an NFKeeTee (already minted or not a folio winner)"
+  } else console.log("got error:", res)
   return res
 }
 
 export const getOwners = async (setNftOwners) => {
+  // console.log("getOwners mock");
+  // return
   const owners = []
   for (let i = 0; i < cfg.nNfts; i++) {
     //TODO parallelize - without too many requests at once
     let owner = ""
     try {
+      if (true)
       owner = await sendReadTx("ownerOf", {
         tokenIdStr: (i + 1).toString(),
       })
@@ -93,13 +96,15 @@ export const getOwners = async (setNftOwners) => {
 }
 
 export const sendReadTx = async (funcName, vals) => {
-  console.log("sendReadtx: ", funcName)
+  if (funcName === "ownerOf")
+    console.log("will try to get owner of tokenId ", vals.tokenIdStr)
+  else console.log("sendReadtx: ", funcName)
+
   try {
     const contract = getContractInstance()
     let resPromise
     switch (funcName) {
       case "ownerOf":
-        console.log("will try to get owner of tokenId ", vals.tokenIdStr)
         resPromise = contract.ownerOf(+vals.tokenIdStr)
         break
       default:
@@ -124,6 +129,11 @@ export const sendTx = async (funcName, vals, enqueueSnackbar) => {
       case "safeMint":
         console.log("will try to mint tokenId ", vals.tokenIdStr)
         txPromise = contract.safeMint(+vals.tokenIdStr)
+        break
+
+      case "resetWhitelist":
+        console.log("will try to reset whitelist to: \n", vals.users)
+        txPromise = contract.resetWhitelist(vals.users)
         break
 
       default:

@@ -1,80 +1,113 @@
-import { AccountCircle } from "@mui/icons-material";
-import AdbIcon from "@mui/icons-material/Adb";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Stack } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { useSnackbar } from "notistack";
-import { useState } from "react";
+import { AccountCircle } from "@mui/icons-material"
+import AdbIcon from "@mui/icons-material/Adb"
+import MenuIcon from "@mui/icons-material/Menu"
+import { Stack } from "@mui/material"
+import AppBar from "@mui/material/AppBar"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Container from "@mui/material/Container"
+import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
+import Toolbar from "@mui/material/Toolbar"
+import Tooltip from "@mui/material/Tooltip"
+import Typography from "@mui/material/Typography"
+import { useSnackbar } from "notistack"
+import { useState } from "react"
 
-import * as cfg from "../constants";
-import { getOwners } from "../operations/operations";
-const pages = ["Home", "Meow", "About"];
+import * as cfg from "../constants"
+import { getOwners } from "../operations/operations"
+const pages = ["Home", "Meow", "About"]
 
 function Header({ accounts, setAccounts, setNftOwners }) {
-  const isConnected = Boolean(accounts[0]);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const isConnected = Boolean(accounts[0])
+  const [metamaskCallbacksAlreadySet, setMetamaskCallbacksAlreadySet] =
+    useState(false)
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   // Check if we are on a supported network
   const checkNetwork = () => {
-    const networkId = window.ethereum.networkVersion;
-    console.log("network:", networkId);
+    const networkId = window.ethereum.networkVersion
+    console.log("network:", networkId)
 
-    const network = cfg.supportedNetworks.find((obj) => obj.id === networkId);
-    if (network) return true;
+    const network = cfg.supportedNetworks.find((obj) => obj.id === networkId)
+    if (network) return true
 
-    const names = cfg.supportedNetworks.map((obj) => obj.name).join(", ");
+    const names = cfg.supportedNetworks.map((obj) => obj.name).join(", ")
     enqueueSnackbar(
       `Please switch to one of the supported networks: ${names}`,
       { variant: "warning" }
-    );
-    return false;
-  };
+    )
+    return false
+  }
 
   const disconnectWallet = (e) => {
-    setAccounts([]);
-    handleCloseUserMenu();
-  };
+    setAccounts([])
+    handleCloseUserMenu()
+  }
+  const connectWalletSimple = async () => {
+    const newAccs = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    })
+    const networkOk = checkNetwork()
+    setAccounts(newAccs)
+    getOwners(setNftOwners) //when we call it accounts are not set yet but
+    //it's ok because we don't use them when fetching owners
+  }
 
   const connectWallet = async () => {
     try {
-      const newAccs = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const networkOk = checkNetwork();
-      setAccounts(newAccs);
-      getOwners(setNftOwners);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      await connectWalletSimple()
+      if (metamaskCallbacksAlreadySet) return
+      
+      //console.log("ssetting cbs")
+      // We reinitialize it whenever the user changes their account.
+      //TODO should probably only set up this callback once, but what if user clicks
+      //connect, then disconnect, then connect again?
+      window.ethereum.on("accountsChanged", ([newAddress]) => {
+        console.log("on accountsChanged")
+        // `accountsChanged` event can be triggered with an undefined newAddress.
+        // This happens when the user removes the Dapp from the "Connected
+        // list of sites allowed access to your addresses" (Metamask > Settings > Connections)
+        // To avoid errors, we reset the dapp state
+        if (newAddress === undefined) {
+          setAccounts([])
+          return
+        }
+        //otherwise we'll just connect new account normally
+        connectWalletSimple()
+      })
 
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+      //if the network is changed, just connect again normally
+      //TODO see above
+      window.ethereum.on("chainChanged", ([]) => {
+        console.log("chain chng")
+        connectWalletSimple()
+      })
+      setMetamaskCallbacksAlreadySet(true)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  const settings = [{ text: "Disconnect", onClick: disconnectWallet }];
+    setAnchorElUser(null)
+  }
+  const settings = [{ text: "Disconnect", onClick: disconnectWallet }]
 
   return (
     <AppBar position="static">
@@ -218,6 +251,6 @@ function Header({ accounts, setAccounts, setNftOwners }) {
         </Toolbar>
       </Container>
     </AppBar>
-  );
+  )
 }
-export default Header;
+export default Header
