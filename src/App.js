@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 import "./App.css"
 
@@ -12,6 +12,7 @@ import NFTGallery from "./components/NFTGallery"
 
 function App() {
   const [accounts, setAccounts] = useState([])
+  const wccAddressRef = useRef("")
   const [nftOwners, setNftOwners] = useState(cfg.initOwners)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const showMint = true
@@ -21,12 +22,12 @@ function App() {
       //interpret as new whitelist
       vals.users = vals.tokenIdStr.split(",").map((st) => st.trim())
       ops
-        .sendTx("resetWhitelist", vals, enqueueSnackbar)
-        .then(() => ops.getOwners(setNftOwners))
+        .sendTx("resetWhitelist", vals, wccAddressRef, enqueueSnackbar)
+        .then(() => ops.getOwners(wccAddressRef.current, setNftOwners))
     } else {
-    ops
-      .sendTx("safeMint", vals, enqueueSnackbar)
-      .then(() => ops.getOwners(setNftOwners))
+      ops
+        .sendTx("mint", vals, wccAddressRef, enqueueSnackbar)
+        .then(() => ops.getOwners(wccAddressRef.current, setNftOwners))
     }
   }
 
@@ -34,6 +35,7 @@ function App() {
     <div className="App">
       <Header
         accounts={accounts}
+        wccAddressRef={wccAddressRef}
         setAccounts={setAccounts}
         setNftOwners={setNftOwners}
       />

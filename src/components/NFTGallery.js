@@ -18,7 +18,7 @@ const NFTGallery = ({ nftOwners }) => {
             <NFTCard
               key={tokenId}
               tokenId={tokenId}
-              owner={nftOwners[+tokenId - 1]}
+              owner={nftOwners[+tokenId]}
             ></NFTCard>
           );
         })}

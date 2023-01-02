@@ -2,8 +2,19 @@ import { ethers } from "ethers"
 import * as cfg from "../constants"
 import contractData from "../contractArtifact"
 import { shortenHash } from "../utils/utils"
+import WCFactoryContractData from "../WCFactory"
 
-const getContractInstance = () => {
+const getContractInstance = (wccAddr) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  // const networkId = window.ethereum.networkVersion
+  // const network = cfg.supportedNetworks.find(
+  //   (network) => network.id === networkId
+  // )
+  // if (!network) throw new Error("unsupported network")
+
+  return new ethers.Contract(wccAddr, contractData.abi, provider.getSigner())
+}
+const getWCFContractInstance = () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum)
   const networkId = window.ethereum.networkVersion
   const network = cfg.supportedNetworks.find(
@@ -12,24 +23,24 @@ const getContractInstance = () => {
   if (!network) throw new Error("unsupported network")
 
   return new ethers.Contract(
-    network.contractAddress,
-    contractData.abi,
+    network.WCFactoryAddress,
+    WCFactoryContractData.abi,
     provider.getSigner()
   )
 }
 
 // export const makeMintTxPromise = (vals) => {
 //   const contract = getContractInstance();
-//   return contract.safeMint(vals.to);
+//   return contract.mint(vals.to);
 // };
 
 // export const sendMintTx = (vals, enqueueSnackbar) => {
 //   const contract = getContractInstance();
-//   const txPromise = contract.safeMint(vals.to);
+//   const txPromise = contract.mint(vals.to);
 //   sendTx(txPromise, enqueueSnackbar);
 // };
 
-export const parseRpcCallError = (error) => {
+const parseRpcCallError = (error) => {
   const res = { ...cfg.RpcCallErrorInitVals }
 
   let txCodeObj = cfg.txCodes.find((x) => x.code === error.code)
@@ -59,31 +70,31 @@ export const parseRpcCallError = (error) => {
   else if (res.fullMsg.indexOf("not yet unlocked") + 1) {
     res.userMsg = "You are not yet unlocked, please wait"
   } else if (res.fullMsg.indexOf("ERC721: invalid token ID") + 1) {
-    res.userMsg = "no owner"
+    res.userMsg = "no owner" //shouldn't happen now that we have getOwner
   } else if (res.fullMsg.indexOf("already minted") + 1) {
-    res.userMsg = "This NFKeeTee was already meow-nted, try another!"
-  } else if (res.fullMsg.indexOf("mint allowance exceeded") + 1) {
-    res.userMsg = "You can't have an NFKeeTee (already minted or not a folio winner)"
+    res.userMsg = "This NFKeeTee was already meownted, try another!"
+  } else if (res.fullMsg.indexOf("can only mint 1") + 1) {
+    res.userMsg = "You already meownted your NFKeeTee"
+  } else if (res.fullMsg.indexOf("not whitelisted") + 1) {
+    res.userMsg = "You can't have an NFKeeTee, you're not on the whitelist"
   } else console.log("got error:", res)
   return res
 }
 
-export const getOwners = async (setNftOwners) => {
-  // console.log("getOwners mock");
-  // return
+export const getOwners = async (wccAddr, setNftOwners) => {
   const owners = []
   for (let i = 0; i < cfg.nNfts; i++) {
     //TODO parallelize - without too many requests at once
     let owner = ""
+    const tokenIdStr = i.toString()
+
     try {
-      if (true)
-      owner = await sendReadTx("ownerOf", {
-        tokenIdStr: (i + 1).toString(),
-      })
+      owner = await sendReadTx("getOwner", { tokenIdStr }, wccAddr)
+      if (owner === cfg.UNMINTED_PLACEHOLDER_ADDR) owner = "Not yet minted"
     } catch (errObj) {
       if (
         errObj.fullMsg !== undefined &&
-        errObj.fullMsg.indexOf("ERC721: invalid token ID") !== -1
+        errObj.fullMsg.indexOf("ERC721: invalid token ID") !== -1 //won't happen now
       ) {
         //this is a "good" error, expected when tokenId doesn't exist
         owner = "Not yet minted"
@@ -95,17 +106,20 @@ export const getOwners = async (setNftOwners) => {
   console.log("got owners:", owners)
 }
 
-export const sendReadTx = async (funcName, vals) => {
-  if (funcName === "ownerOf")
+export const sendReadTx = async (funcName, vals, wccAddr) => {
+  console.log("wccAddr", wccAddr)
+  if (funcName === "getOwner")
     console.log("will try to get owner of tokenId ", vals.tokenIdStr)
   else console.log("sendReadtx: ", funcName)
 
   try {
-    const contract = getContractInstance()
     let resPromise
     switch (funcName) {
-      case "ownerOf":
-        resPromise = contract.ownerOf(+vals.tokenIdStr)
+      case "getOwner":
+        resPromise = getContractInstance(wccAddr).getOwner(+vals.tokenIdStr)
+        break
+      case "getWCCaddress":
+        resPromise = getWCFContractInstance().lastWCCaddress()
         break
       default:
         throw new Error("Unsupported operation")
@@ -120,20 +134,30 @@ export const sendReadTx = async (funcName, vals) => {
   }
 }
 
-export const sendTx = async (funcName, vals, enqueueSnackbar) => {
+export const sendTx = async (
+  funcName,
+  vals,
+  wccAddressRef,
+  enqueueSnackbar
+) => {
   console.log("sendtx: ", funcName)
   try {
-    const contract = getContractInstance()
     let txPromise
     switch (funcName) {
-      case "safeMint":
+      case "mint":
         console.log("will try to mint tokenId ", vals.tokenIdStr)
-        txPromise = contract.safeMint(+vals.tokenIdStr)
+        txPromise = getContractInstance(wccAddressRef.current).mint(
+          +vals.tokenIdStr
+        )
         break
 
       case "resetWhitelist":
-        console.log("will try to reset whitelist to: \n", vals.users)
-        txPromise = contract.resetWhitelist(vals.users)
+        const wcf = getWCFContractInstance()
+        console.log(
+          "will try to deploy new NFT and WCC with whitelist: \n",
+          vals.users
+        )
+        txPromise = wcf.makeNew(vals.users)
         break
 
       default:
@@ -146,7 +170,7 @@ export const sendTx = async (funcName, vals, enqueueSnackbar) => {
     enqueueSnackbar(`Tx ${hashShort} processing`, {
       autoHideDuration: cfg.DUR_SNACKBAR_TX,
     })
-    console.log(tx.hash)
+    console.log("tx hash:", tx.hash)
     //dispatchState({ type: Action.SET_TX_BEINGSENT, payload: tx.hash });
     const receipt = await tx.wait()
     console.log("tx receipt", receipt)
@@ -167,6 +191,19 @@ export const sendTx = async (funcName, vals, enqueueSnackbar) => {
       variant: "success",
     })
     console.log("Tx successful")
+
+    if (funcName === "resetWhitelist") {
+      const eventData = receipt.events[1].args
+      console.log(eventData)
+      wccAddressRef.current = eventData.lastWCCaddress
+      alert(`Deployed two new contracts:
+      
+1. New NFT contract (with same media) at ${eventData.lastNFTaddress}
+
+2. New WCC contract (with provided whitelist) at ${eventData.lastWCCaddress}.
+
+The UI will be reset to interact with these new contracts.`)
+    }
   } catch (error) {
     const errObj = parseRpcCallError(error)
 

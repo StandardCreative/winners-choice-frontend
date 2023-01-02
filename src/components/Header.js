@@ -1,5 +1,5 @@
 import { AccountCircle } from "@mui/icons-material"
-import AdbIcon from "@mui/icons-material/Adb"
+import Diversity1Icon from "@mui/icons-material/Diversity1"
 import MenuIcon from "@mui/icons-material/Menu"
 import { Stack } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
@@ -16,10 +16,15 @@ import { useSnackbar } from "notistack"
 import { useState } from "react"
 
 import * as cfg from "../constants"
-import { getOwners } from "../operations/operations"
+import { getOwners, sendReadTx } from "../operations/operations"
 const pages = ["Home", "Meow", "About"]
 
-function Header({ accounts, setAccounts, setNftOwners }) {
+function Header({
+  accounts,
+  wccAddressRef,
+  setAccounts,
+  setNftOwners,
+}) {
   const isConnected = Boolean(accounts[0])
   const [metamaskCallbacksAlreadySet, setMetamaskCallbacksAlreadySet] =
     useState(false)
@@ -45,21 +50,29 @@ function Header({ accounts, setAccounts, setNftOwners }) {
     setAccounts([])
     handleCloseUserMenu()
   }
+
   const connectWalletSimple = async () => {
-    const newAccs = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    })
-    const networkOk = checkNetwork()
-    setAccounts(newAccs)
-    getOwners(setNftOwners) //when we call it accounts are not set yet but
-    //it's ok because we don't use them when fetching owners
+    try {
+      const newAccs = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      })
+      const networkOk = checkNetwork()
+      setAccounts(newAccs)
+      wccAddressRef.current = await sendReadTx("getWCCaddress") //don't need other args
+      console.log(`got current WCC address: ${wccAddressRef.current}`)
+
+      getOwners(wccAddressRef.current, setNftOwners) //when we call it accounts are not set yet but
+      //it's ok because we don't use them when fetching owners
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const connectWallet = async () => {
     try {
       await connectWalletSimple()
       if (metamaskCallbacksAlreadySet) return
-      
+
       //console.log("ssetting cbs")
       // We reinitialize it whenever the user changes their account.
       //TODO should probably only set up this callback once, but what if user clicks
@@ -113,7 +126,7 @@ function Header({ accounts, setAccounts, setNftOwners }) {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Diversity1Icon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -168,7 +181,7 @@ function Header({ accounts, setAccounts, setNftOwners }) {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Diversity1Icon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
