@@ -47,14 +47,17 @@ export const MintForm = ({ onSubmit, account }) => {
             style={{ margin: "32px" }}
           >
             <Stack gap="0px">
-              <Typography textAlign="center" fontWeight="bold">
+            <Typography textAlign="center" fontWeight="bold">
+                Minting Panel
+              </Typography>
+              {/* <Typography textAlign="center" fontWeight="bold">
                 Resettable demo mode: to deploy new NFT and WCC enter a new
                 whitelist below (example: 0xabc, 0x123). Unlock interval is 1 min.
               </Typography>
               <Typography textAlign="center" marginBottom="16px">
                 Example: 1. Enter just your address; 2. Wait for tx to succeed;
                 3. Enter "1" to mint NFKeeTees #1
-              </Typography>
+              </Typography> */}
               <Stack
                 direction="row"
                 flexWrap="wrap"
@@ -63,7 +66,7 @@ export const MintForm = ({ onSubmit, account }) => {
                 <TextField
                   id="tokenIdStr"
                   name="tokenIdStr"
-                  label="NFT number (or new whitelist)"
+                  label="NFT number"
                   sx={{ width: "46ch", maxWidth: "100%" }}
                   value={formik.values.tokenIdStr}
                   onChange={formik.handleChange}
@@ -74,7 +77,7 @@ export const MintForm = ({ onSubmit, account }) => {
 
               <Stack direction="row" justifyContent="left">
                 <Button variant="contained" type="submit" disabled={isDisabled}>
-                  Mint (or create new WC scenario)
+                  Mint
                 </Button>
               </Stack>
             </Stack>

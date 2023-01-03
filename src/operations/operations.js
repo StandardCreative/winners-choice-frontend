@@ -119,7 +119,7 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
         resPromise = getContractInstance(wccAddr).getOwner(+vals.tokenIdStr)
         break
       case "getWCCaddress":
-        resPromise = getWCFContractInstance().lastWCCaddress()
+        resPromise = getWCFContractInstance().curWCCaddress()
         break
       default:
         throw new Error("Unsupported operation")
@@ -143,6 +143,7 @@ export const sendTx = async (
   console.log("sendtx: ", funcName)
   try {
     let txPromise
+    let wcf
     switch (funcName) {
       case "mint":
         console.log("will try to mint tokenId ", vals.tokenIdStr)
@@ -151,13 +152,17 @@ export const sendTx = async (
         )
         break
 
-      case "resetWhitelist":
-        const wcf = getWCFContractInstance()
-        console.log(
-          "will try to deploy new NFT and WCC with whitelist: \n",
-          vals.users
-        )
-        txPromise = wcf.makeNew(vals.users)
+      case "makeNewERC721":
+        wcf = getWCFContractInstance()
+        console.log("will try to deploy new NFT \n", vals.users)
+        txPromise = wcf.makeNewERC721()
+        break
+
+      case "makeNewWCC":
+        wcf = getWCFContractInstance()
+        const interval = Math.round(vals.unlockInterval * 60)
+        console.log("will try to deploy new WCC with:\nwhitelist", vals.users, "\nnft address:\n", vals.nftAddr, "\ninterval", interval, "sec")
+        txPromise = wcf.makeNewWCC(vals.users, vals.nftAddr, interval)
         break
 
       default:
@@ -192,17 +197,23 @@ export const sendTx = async (
     })
     console.log("Tx successful")
 
-    if (funcName === "resetWhitelist") {
-      const eventData = receipt.events[1].args
-      console.log(eventData)
-      wccAddressRef.current = eventData.lastWCCaddress
-      alert(`Deployed two new contracts:
+    if (funcName === "makeNewWCC") {
+      const eventData = receipt.events[0].args
+      console.log(eventData, "full events", receipt.events)
+      wccAddressRef.current = eventData.curWCCaddress
+      alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
       
-1. New NFT contract (with same media) at ${eventData.lastNFTaddress}
-
-2. New WCC contract (with provided whitelist) at ${eventData.lastWCCaddress}.
+The associated NFT contract (with same media) is ${eventData.curNFTaddress}
 
 The UI will be reset to interact with these new contracts.`)
+    } else if (funcName === "makeNewERC721") {
+      const eventData = receipt.events[1].args
+      console.log(eventData, "full events", receipt.events)
+
+      alert(
+        `Deployed new NFT contract (with same media) at ${eventData.createdNFTaddress}.`
+      )
+      return eventData.createdNFTaddress
     }
   } catch (error) {
     const errObj = parseRpcCallError(error)
