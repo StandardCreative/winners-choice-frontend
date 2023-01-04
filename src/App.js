@@ -18,7 +18,7 @@ function App() {
   const [nftOwners, setNftOwners] = useState(cfg.initOwners)
   const [metadatas, setMetadatas] = useState([])
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const showMint = true
+  const [uiMode, setUiMode] = useState("admin") //"admin", "mint", "logs"
   //const mintCb = (vals) => ops.sendReadTx("ownerOf", vals);
   const mintCb = (vals) => {
     ops
@@ -41,7 +41,7 @@ function App() {
       // return
       enqueueSnackbar(
         "If your NFT contract doesn't have a compatible interface, WC will not work.",
-        { variant: "information" }
+        { variant: "info" }
       )
       ops
         .sendTx("makeNewWCC", vals, wccAddressRef, enqueueSnackbar)
@@ -84,29 +84,32 @@ function App() {
         setAccounts={setAccounts}
         setNftOwners={setNftOwners}
         setMetadatas={setMetadatas}
+        setUiMode={setUiMode}
       />
-      {cfg.showERC721CreationPanel && (
+      {uiMode === "Admin" && (
         <ERC721CreationForm
           onSubmit={erc721CreationCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
         />
       )}
-      {cfg.showWCCreationPanel && (
+      {uiMode === "Admin" && (
         <WCFactoryForm
           onSubmit={wcFactoryCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
         />
       )}
-      {showMint && (
+      {uiMode === "Mint" && (
         <MintForm
           onSubmit={mintCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
         />
       )}
-      <NFTGallery nftOwners={nftOwners} metadatas={metadatas} />
+      {uiMode === "Mint" && (
+        <NFTGallery nftOwners={nftOwners} metadatas={metadatas} />
+      )}
     </div>
   )
 }

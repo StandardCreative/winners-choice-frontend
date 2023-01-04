@@ -47,7 +47,12 @@ export const MintForm = ({ onSubmit, account }) => {
             style={{ margin: "32px" }}
           >
             <Stack gap="0px">
-            <Typography textAlign="center" fontWeight="bold">
+              <Typography
+                variant="h5"
+                color="primary"
+                textAlign="center"
+                gutterBottom
+              >
                 Minting Panel
               </Typography>
               {/* <Typography textAlign="center" fontWeight="bold">

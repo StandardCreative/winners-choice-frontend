@@ -275,7 +275,7 @@ export const sendTx = async (
       wccAddressRef.current = eventData.curWCCaddress
       alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
       
-The associated NFT contract (with same media) is ${eventData.curNFTaddress}
+The associated NFT contract is ${eventData.curNFTaddress}
 
 The UI will be reset to interact with these new contracts.`)
     } else if (funcName === "makeNewERC721") {

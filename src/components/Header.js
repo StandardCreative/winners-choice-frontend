@@ -16,20 +16,25 @@ import { useSnackbar } from "notistack"
 import { useState } from "react"
 
 import * as cfg from "../constants"
-import { getMetadataAndOwners, getOwners, sendReadTx } from "../operations/operations"
-const pages = ["Home", "Meow", "About"]
+import { getMetadataAndOwners, sendReadTx } from "../operations/operations"
+const pages = ["Mint", "Admin"]
 
 function Header({
   accounts,
   wccAddressRef,
   setAccounts,
   setNftOwners,
-  setMetadatas
+  setMetadatas,
+  setUiMode,
 }) {
   const isConnected = Boolean(accounts[0])
   const [metamaskCallbacksAlreadySet, setMetamaskCallbacksAlreadySet] =
     useState(false)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const makeMenuHandler = (option) => () => {
+    setUiMode(option)
+    handleCloseNavMenu()
+  }
 
   // Check if we are on a supported network
   const checkNetwork = () => {
@@ -127,7 +132,7 @@ function Header({
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Diversity1Icon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Diversity1Icon sx={{ display: { xs: "none", sm: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -135,18 +140,18 @@ function Header({
             href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: "none", sm: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".15rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            NFKeeTees
+            Winner's Choice
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", sm: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -172,17 +177,17 @@ function Header({
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: { xs: "block", sm: "none" },
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={makeMenuHandler(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Diversity1Icon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Diversity1Icon sx={{ display: { xs: "flex", sm: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -190,22 +195,22 @@ function Header({
             href=""
             sx={{
               mr: 2,
-              display: { xs: "flex", md: "none" },
+              display: { xs: "flex", sm: "none" },
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".15rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            NFKeeTees
+            Winner's Choice
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={makeMenuHandler(page)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
