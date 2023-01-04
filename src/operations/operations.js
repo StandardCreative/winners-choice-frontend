@@ -80,34 +80,85 @@ const parseRpcCallError = (error) => {
   } else console.log("got error:", res)
   return res
 }
+export const getMetadataAndOwners = async (
+  wccAddr,
+  setNftOwners,
+  setMetadatas
+) => {
+  await getMetadata(wccAddr, setMetadatas)
+  await getOwners(wccAddr, setNftOwners)
+}
+
+export const getMetadata = async (wccAddr, setMetadatas) => {
+  const jsonDataArray = []
+  try {
+    console.log("fetching n of folios")
+    const nFolios = await sendReadTx("nFolios", {}, wccAddr)
+    console.log("got", nFolios, "fetching array of tokenURIs")
+    const tokenURIs = await sendReadTx("getAllTokenURIs", {}, wccAddr)
+    //get the json metadata for each token (which contains image URIs)
+    for (let i = 0; i < nFolios; i++) {
+      let uri = tokenURIs[i]
+      if (tokenURIs[i].startsWith("ipfs://"))
+        uri = `${cfg.ipfsWebPrefix}${tokenURIs[i].substr(7)}`
+      console.log("fetching from", uri)
+
+      const jsonData = await fetch(uri).then((resp) => resp.json())
+      if (jsonData.image?.startsWith("ipfs://"))
+        jsonData.image = `${cfg.ipfsWebPrefix}${jsonData.image.substr(7)}`
+
+      jsonDataArray.push(jsonData)
+      console.log("token added to array, setting")
+      setMetadatas(jsonDataArray)
+    }
+    console.log("json metadata acquired")
+  } catch (e) {
+    console.log(e)
+  }
+}
+// export const getOwners = async (wccAddr, setNftOwners) => {
+//   const owners = []
+//   for (let i = 0; i < cfg.nNfts; i++) {
+//     //TODO parallelize - without too many requests at once
+//     let owner = ""
+//     const tokenIdStr = i.toString()
+
+//     try {
+//       owner = await sendReadTx("getOwner", { tokenIdStr }, wccAddr)
+//       if (owner === cfg.UNMINTED_PLACEHOLDER_ADDR) owner = "Not yet minted"
+//     } catch (errObj) {
+//       if (
+//         errObj.fullMsg !== undefined &&
+//         errObj.fullMsg.indexOf("ERC721: invalid token ID") !== -1 //won't happen now
+//       ) {
+//         //this is a "good" error, expected when tokenId doesn't exist
+//         owner = "Not yet minted"
+//       }
+//     }
+//     owners.push(owner)
+//   }
+//   setNftOwners(owners)
+//   console.log("got owners:", owners)
+// }
 
 export const getOwners = async (wccAddr, setNftOwners) => {
-  const owners = []
-  for (let i = 0; i < cfg.nNfts; i++) {
-    //TODO parallelize - without too many requests at once
-    let owner = ""
-    const tokenIdStr = i.toString()
+  try {
+    const ownersReadOnly = await sendReadTx("getAllOwners", {}, wccAddr)
+    const owners = [...ownersReadOnly]
 
-    try {
-      owner = await sendReadTx("getOwner", { tokenIdStr }, wccAddr)
-      if (owner === cfg.UNMINTED_PLACEHOLDER_ADDR) owner = "Not yet minted"
-    } catch (errObj) {
-      if (
-        errObj.fullMsg !== undefined &&
-        errObj.fullMsg.indexOf("ERC721: invalid token ID") !== -1 //won't happen now
-      ) {
-        //this is a "good" error, expected when tokenId doesn't exist
-        owner = "Not yet minted"
-      }
-    }
-    owners.push(owner)
+    for (let i = 0; i < owners.length; i++)
+      if (owners[i] === cfg.UNMINTED_PLACEHOLDER_ADDR)
+        owners[i] = "Not yet minted"
+
+    setNftOwners(owners)
+    console.log("got owners:", owners)
+  } catch (errObj) {
+    console.log("failed to get owners, err:\n", errObj)
   }
-  setNftOwners(owners)
-  console.log("got owners:", owners)
 }
 
 export const sendReadTx = async (funcName, vals, wccAddr) => {
-  console.log("wccAddr", wccAddr)
+  //console.log("wccAddr", wccAddr)
   if (funcName === "getOwner")
     console.log("will try to get owner of tokenId ", vals.tokenIdStr)
   else console.log("sendReadtx: ", funcName)
@@ -118,8 +169,17 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
       case "getOwner":
         resPromise = getContractInstance(wccAddr).getOwner(+vals.tokenIdStr)
         break
+      case "getAllOwners":
+        resPromise = getContractInstance(wccAddr).getAllOwners()
+        break
       case "getWCCaddress":
         resPromise = getWCFContractInstance().curWCCaddress()
+        break
+      case "nFolios":
+        resPromise = getContractInstance(wccAddr).nFolios()
+        break
+      case "getAllTokenURIs":
+        resPromise = getContractInstance(wccAddr).getAllTokenURIs()
         break
       default:
         throw new Error("Unsupported operation")
@@ -154,14 +214,26 @@ export const sendTx = async (
 
       case "makeNewERC721":
         wcf = getWCFContractInstance()
-        console.log("will try to deploy new NFT \n", vals.users)
-        txPromise = wcf.makeNewERC721()
+        console.log("will try to deploy new ERC721 with params: \n", vals)
+        txPromise = wcf.makeNewERC721(
+          vals.nFolios,
+          vals.baseURI,
+          vals.suffixURI
+        )
         break
 
       case "makeNewWCC":
         wcf = getWCFContractInstance()
         const interval = Math.round(vals.unlockInterval * 60)
-        console.log("will try to deploy new WCC with:\nwhitelist", vals.users, "\nnft address:\n", vals.nftAddr, "\ninterval", interval, "sec")
+        console.log(
+          "will try to deploy new WCC with:\nwhitelist",
+          vals.users,
+          "\nnft address:\n",
+          vals.nftAddr,
+          "\ninterval",
+          interval,
+          "sec"
+        )
         txPromise = wcf.makeNewWCC(vals.users, vals.nftAddr, interval)
         break
 
@@ -210,9 +282,7 @@ The UI will be reset to interact with these new contracts.`)
       const eventData = receipt.events[1].args
       console.log(eventData, "full events", receipt.events)
 
-      alert(
-        `Deployed new NFT contract (with same media) at ${eventData.createdNFTaddress}.`
-      )
+      alert(`Deployed new NFT contract at ${eventData.createdNFTaddress}.`)
       return eventData.createdNFTaddress
     }
   } catch (error) {

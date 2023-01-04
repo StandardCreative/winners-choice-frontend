@@ -28,7 +28,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function NFTCard({ tokenId, owner }) {
+export default function NFTCard({ tokenId, owner, jsonData }) {
   const [expanded, setExpanded] = React.useState(false);
   const ownerStr = owner.startsWith("0x")
     ? `Owner: ${owner.slice(0, 4)}...${owner.slice(-4)}`
@@ -42,8 +42,8 @@ export default function NFTCard({ tokenId, owner }) {
     <Card sx={{ maxWidth: 345, mt: 3 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="nfkeetee">
-            KT
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="nft">
+            F
           </Avatar>
         }
         action={
@@ -51,23 +51,25 @@ export default function NFTCard({ tokenId, owner }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={"NFKeeTees #" + tokenId}
+        title={jsonData.name}
         subheader={ownerStr}
       />
       <CardMedia
         component="img"
         height="194"
-        image={cfg.mediaPrefix + tokenId + cfg.mediaSuffix}
-        alt={"NFKeeTees #" + tokenId}
+        // image={cfg.mediaPrefix + tokenId + cfg.mediaSuffix}
+        image={jsonData.image}
+        alt={jsonData.name?? "noname"}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          These keetees are quite naughty, but they make up for that with
+          {/* These keetees are quite naughty, but they make up for that with
           cuteness. They love and take care of each other by giving each other
           cat baths, and never fight... wait, scratch that... sometimes fight a
           little but quickly make up and go back to snuggling. Did you catch the
           pun there? If so, "pet" yourself on the back and get yourself an
-          NFKeeTee!
+          NFKeeTee! */}
+          {jsonData.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -90,7 +92,7 @@ export default function NFTCard({ tokenId, owner }) {
         <CardContent>
           <Typography paragraph>How to mint:</Typography>
           <Typography paragraph>
-            Easy, find the NFKeeTee you want, put its number in the box above,
+            Easy, find the NFT you want, put its number in the box above,
             and click Mint.
           </Typography>
           <Typography paragraph>

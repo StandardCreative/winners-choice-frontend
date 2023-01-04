@@ -1,26 +1,40 @@
 //SETTINGS
-export const showWCCreationWidget = true
+export const showERC721CreationPanel = true
+export const showWCCreationPanel = true
 export const getMediaFromPredefinedLoc = true //https://ipfs.io/ipfs/
+/*
+{name: 'NFKeeTees #0', description: 'These keetees are quite naughty, but they make up …ourself on the back and get yourself an NFKeeTee!', image: 'ipfs://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy/0.jpeg', attributes: Array(2)}
+attributes
+: 
+Array(2)
+0
+: 
+{trait_type: 'Cuteness', value: '91'}
+1
+: 
+{trait_type: 'Naughtiness', value: '21'} */
 
 //LESS IMPORTANT SETTINGS
 export const DUR_SNACKBAR_TX = 60000 //in ms here, in my ts app it was in seconds for some reason
 export const DUR_SNACKBAR = 15000
 
-//BE CAREFUL EDITING ANY ITEMS BELOW 
+//BE CAREFUL EDITING ANY ITEMS BELOW
+export const ipfsWebPrefix = "https://ipfs.io/ipfs/"
+
 export const supportedNetworks = [
   {
     name: "Goerli",
     id: "5",
     contractAddress: "0x3aF9F0408456b4296A74ad42bAc3879750aC1842", //irrelevant for resettable demo
     //prev "0x589702910E28a5D6F3c08DB3a48833EF0174B78c",
-    WCFactoryAddress: "0x876E416bab2E0E430245C98f9d0edDc569423717",
+    WCFactoryAddress: "", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
     //v1 "0x83292B67BaBF3E141c58526F0a26FB33F4A42Cb0",
   },
   {
     name: "Local (with chain id 1337)",
     id: "1337",
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-    WCFactoryAddress: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // irrelevant 
+    WCFactoryAddress: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0", // prev "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
   },
 ]
 

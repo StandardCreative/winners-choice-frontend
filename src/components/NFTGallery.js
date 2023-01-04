@@ -3,7 +3,7 @@ import React from "react";
 import * as cfg from "../constants";
 import NFTCard from "./NFTCard";
 
-const NFTGallery = ({ nftOwners }) => {
+const NFTGallery = ({ nftOwners, metadatas }) => {
   return (
     <>
       <Typography variant="h4" color="primary" textAlign="center">NFKeeTees Gallery</Typography>
@@ -13,12 +13,13 @@ const NFTGallery = ({ nftOwners }) => {
         justifyContent="center"
         sx={{ gridColumnGap: "16px" }}
       >
-        {cfg.tokenIds.map((tokenId) => {
+        {metadatas.map((jsonData, ind) => {
           return (
             <NFTCard
-              key={tokenId}
-              tokenId={tokenId}
-              owner={nftOwners[+tokenId]}
+              key={ind}
+              tokenId={ind}
+              owner={nftOwners[ind]}
+              jsonData={jsonData}
             ></NFTCard>
           );
         })}

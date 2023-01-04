@@ -16,7 +16,7 @@ import { useSnackbar } from "notistack"
 import { useState } from "react"
 
 import * as cfg from "../constants"
-import { getOwners, sendReadTx } from "../operations/operations"
+import { getMetadataAndOwners, getOwners, sendReadTx } from "../operations/operations"
 const pages = ["Home", "Meow", "About"]
 
 function Header({
@@ -24,6 +24,7 @@ function Header({
   wccAddressRef,
   setAccounts,
   setNftOwners,
+  setMetadatas
 }) {
   const isConnected = Boolean(accounts[0])
   const [metamaskCallbacksAlreadySet, setMetamaskCallbacksAlreadySet] =
@@ -61,7 +62,7 @@ function Header({
       wccAddressRef.current = await sendReadTx("getWCCaddress") //don't need other args
       console.log(`got current WCC address: ${wccAddressRef.current}`)
 
-      getOwners(wccAddressRef.current, setNftOwners) //when we call it accounts are not set yet but
+      getMetadataAndOwners(wccAddressRef.current, setNftOwners, setMetadatas) //when we call it accounts are not set yet but
       //it's ok because we don't use them when fetching owners
     } catch (e) {
       console.log(e)
