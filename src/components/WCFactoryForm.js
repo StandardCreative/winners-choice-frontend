@@ -6,12 +6,6 @@ import { Formik } from "formik"
 import { useState } from "react"
 import { validateAddr } from "../utils/utils"
 
-const WCFactoryFormInitVals = {
-  whitelist: "",
-  nftAddr: "",
-  unlockInterval: "",
-}
-
 const validate = (values) => {
   console.log("validate")
   const errors = {}
@@ -26,9 +20,15 @@ const validate = (values) => {
   return errors
 }
 
-export const WCFactoryForm = ({ onSubmit, account }) => {
+export const WCFactoryForm = ({ onSubmit, account, nftAddr }) => {
   const [showErrs, setShowErrs] = useState(false)
   const isDisabled = !Boolean(account)
+  const WCFactoryFormInitVals = {
+    whitelist: "",
+    nftAddr: nftAddr,
+    unlockInterval: "",
+  }
+  
   return (
     <>
       <Formik

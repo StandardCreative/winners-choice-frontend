@@ -8,38 +8,49 @@ import * as ops from "./operations/operations"
 
 import { ERC721CreationForm } from "./components/ERC721CreationForm"
 import Header from "./components/Header"
+import LogHistory from "./components/LogHistory"
 import { MintForm } from "./components/MintForm"
 import NFTGallery from "./components/NFTGallery"
 import { WCFactoryForm } from "./components/WCFactoryForm"
-import LogHistory from "./components/LogHistory"
 const mockLogEntry = {
   txHash: "0x97395b8e77c3c367f459bc4cbdc5b45ce752f9bdea4a08a62e5efb4de628d97c",
   deployedAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
   action: "makeNewWCC",
   vals: {
-    users: ["0xb71b27b14ca7cee82ca214c1332765a727497762", "0xb71b27b14ca7cee82ca214c1332765a727497762", "0xb71b27b14ca7cee82ca214c1332765a727497762", "0xb71b27b14ca7cee82ca214c1332765a727497762"],
+    users: [
+      "0xb71b27b14ca7cee82ca214c1332765a727497762",
+      "0xb71b27b14ca7cee82ca214c1332765a727497762",
+      "0xb71b27b14ca7cee82ca214c1332765a727497762",
+      "0xb71b27b14ca7cee82ca214c1332765a727497762",
+    ],
     nftAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
-    unlockInterval: 60    
-  }
+    unlockInterval: 60,
+  },
 }
 function App() {
   const [accounts, setAccounts] = useState([])
   const [nftOwners, setNftOwners] = useState(cfg.initOwners)
   const [metadatas, setMetadatas] = useState([])
   const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
+  const [newlyDeployedERC721Addr, setNewlyDeployedERC721Addr] = useState("")
   const logsRef = useRef([mockLogEntry])
   const wccAddressRef = useRef("")
-  const stateRefs = {wcc: wccAddressRef, logs: logsRef}
+  const stateRefs = {
+    wcc: wccAddressRef,
+    logs: logsRef,
+    nftAddr: newlyDeployedERC721Addr,
+    setNftAddr: setNewlyDeployedERC721Addr,
+  }
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   const mintCb = (vals) => {
     ops
-      .sendTx("mint", vals, stateRefs, enqueueSnackbar)
+      .sendTx("mint", { ...vals }, stateRefs, enqueueSnackbar)
       .then(() => ops.getOwners(wccAddressRef.current, setNftOwners))
   }
   const erc721CreationCb = (vals) => {
     ops
-      .sendTx("makeNewERC721", vals, stateRefs, enqueueSnackbar)
+      .sendTx("makeNewERC721", { ...vals }, stateRefs, enqueueSnackbar)
       .then((nftAddr) => {})
   }
   const wcFactoryCb = (vals) => {
@@ -56,7 +67,7 @@ function App() {
         { variant: "info" }
       )
       ops
-        .sendTx("makeNewWCC", vals, stateRefs, enqueueSnackbar)
+        .sendTx("makeNewWCC", { ...vals }, stateRefs, enqueueSnackbar)
         .then(() =>
           ops.getMetadataAndOwners(
             wccAddressRef.current,
@@ -110,6 +121,7 @@ function App() {
           onSubmit={wcFactoryCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
+          nftAddr={stateRefs.nftAddr}
         />
       )}
       {uiMode === "Mint" && (
@@ -122,7 +134,9 @@ function App() {
       {uiMode === "Mint" && (
         <NFTGallery nftOwners={nftOwners} metadatas={metadatas} />
       )}
-      {uiMode==="History"&&<LogHistory logEntries={stateRefs.logs.current}/>}
+      {uiMode === "History" && (
+        <LogHistory logEntries={stateRefs.logs.current} />
+      )}
     </div>
   )
 }

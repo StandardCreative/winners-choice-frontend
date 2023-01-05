@@ -210,7 +210,7 @@ export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
 
       case "makeNewERC721":
         wcf = getWCFContractInstance()
-        console.log("will try to deploy new ERC721 with params: \n", vals)
+        console.log("will try to deploy new ERC721 with params: \n", {vals})
         txPromise = wcf.makeNewERC721(
           vals.nFolios,
           vals.baseURI,
@@ -220,7 +220,7 @@ export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
 
       case "makeNewWCC":
         wcf = getWCFContractInstance()
-        vals.unlockInterval = Math.round(vals.unlockInterval * 60)
+        vals.unlockInterval = Math.round(+vals.unlockInterval * 60)
         console.log(
           "will try to deploy new WCC with:\nwhitelist",
           vals.users,
@@ -288,12 +288,13 @@ The UI will be reset to interact with these new contracts.`)
 
         logEntry.deployedAddr = eventData.curWCCaddress
         break
-        
+
       case "makeNewERC721":
         eventData = receipt.events[1].args
         console.log({ eventData })
 
         alert(`Deployed new NFT contract at ${eventData.createdNFTaddress}.`)
+        stateRefs.setNftAddr(eventData.createdNFTaddress)
         logEntry.deployedAddr = eventData.createdNFTaddress
         res = eventData.createdNFTaddress
         break
