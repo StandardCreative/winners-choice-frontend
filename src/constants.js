@@ -20,6 +20,7 @@ export const DUR_SNACKBAR = 15000
 
 //BE CAREFUL EDITING ANY ITEMS BELOW
 export const ipfsWebPrefix = "https://ipfs.io/ipfs/"
+export const etherscanTxPrefix = "https://goerli.etherscan.io/tx/"
 
 export const supportedNetworks = [
   {
@@ -27,14 +28,14 @@ export const supportedNetworks = [
     id: "5",
     contractAddress: "0x3aF9F0408456b4296A74ad42bAc3879750aC1842", //irrelevant for resettable demo
     //prev "0x589702910E28a5D6F3c08DB3a48833EF0174B78c",
-    WCFactoryAddress: "", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
+    WCFactoryAddress: "0xb71b27b14ca7cee82ca214c1332765a727497762", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
     //v1 "0x83292B67BaBF3E141c58526F0a26FB33F4A42Cb0",
   },
   {
     name: "Local (with chain id 1337)",
     id: "1337",
     contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // irrelevant 
-    WCFactoryAddress: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0", // prev "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    WCFactoryAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3", // prev "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
   },
 ]
 

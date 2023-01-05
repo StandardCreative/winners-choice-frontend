@@ -17,7 +17,7 @@ import { useState } from "react"
 
 import * as cfg from "../constants"
 import { getMetadataAndOwners, sendReadTx } from "../operations/operations"
-const pages = ["Mint", "Admin"]
+const pages = ["Mint", "Admin", "History"]
 
 function Header({
   accounts,

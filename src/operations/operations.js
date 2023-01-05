@@ -194,12 +194,8 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
   }
 }
 
-export const sendTx = async (
-  funcName,
-  vals,
-  wccAddressRef,
-  enqueueSnackbar
-) => {
+export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
+  let res
   console.log("sendtx: ", funcName)
   try {
     let txPromise
@@ -207,7 +203,7 @@ export const sendTx = async (
     switch (funcName) {
       case "mint":
         console.log("will try to mint tokenId ", vals.tokenIdStr)
-        txPromise = getContractInstance(wccAddressRef.current).mint(
+        txPromise = getContractInstance(stateRefs.wcc.current).mint(
           +vals.tokenIdStr
         )
         break
@@ -224,23 +220,27 @@ export const sendTx = async (
 
       case "makeNewWCC":
         wcf = getWCFContractInstance()
-        const interval = Math.round(vals.unlockInterval * 60)
+        vals.unlockInterval = Math.round(vals.unlockInterval * 60)
         console.log(
           "will try to deploy new WCC with:\nwhitelist",
           vals.users,
           "\nnft address:\n",
           vals.nftAddr,
           "\ninterval",
-          interval,
+          vals.unlockInterval,
           "sec"
         )
-        txPromise = wcf.makeNewWCC(vals.users, vals.nftAddr, interval)
+        txPromise = wcf.makeNewWCC(
+          vals.users,
+          vals.nftAddr,
+          vals.unlockInterval
+        )
         break
 
       default:
         throw new Error("Unsupported operation")
     }
-
+    //common actions for all tx
     console.log("awaiting wallet confirmation")
     const tx = await txPromise
     const hashShort = shortenHash(tx.hash)
@@ -248,7 +248,7 @@ export const sendTx = async (
       autoHideDuration: cfg.DUR_SNACKBAR_TX,
     })
     console.log("tx hash:", tx.hash)
-    //dispatchState({ type: Action.SET_TX_BEINGSENT, payload: tx.hash });
+
     const receipt = await tx.wait()
     console.log("tx receipt", receipt)
 
@@ -269,32 +269,43 @@ export const sendTx = async (
     })
     console.log("Tx successful")
 
-    if (funcName === "makeNewWCC") {
-      const eventData = receipt.events[0].args
-      console.log(eventData, "full events", receipt.events)
-      wccAddressRef.current = eventData.curWCCaddress
-      alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
+    //update state/refs (including logs) based on tx receipt info, alert user
+    const logEntry = { action: funcName, txHash: tx.hash, vals: vals }
+    let eventData
+    switch (funcName) {
+      case "mint":
+        break
+
+      case "makeNewWCC":
+        eventData = receipt.events[0].args
+        console.log({ eventData })
+        stateRefs.wcc.current = eventData.curWCCaddress
+        alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
       
 The associated NFT contract is ${eventData.curNFTaddress}
 
 The UI will be reset to interact with these new contracts.`)
-    } else if (funcName === "makeNewERC721") {
-      const eventData = receipt.events[1].args
-      console.log(eventData, "full events", receipt.events)
 
-      alert(`Deployed new NFT contract at ${eventData.createdNFTaddress}.`)
-      return eventData.createdNFTaddress
+        logEntry.deployedAddr = eventData.curWCCaddress
+        break
+        
+      case "makeNewERC721":
+        eventData = receipt.events[1].args
+        console.log({ eventData })
+
+        alert(`Deployed new NFT contract at ${eventData.createdNFTaddress}.`)
+        logEntry.deployedAddr = eventData.createdNFTaddress
+        res = eventData.createdNFTaddress
+        break
     }
+    stateRefs.logs.current.push(logEntry)
   } catch (error) {
     const errObj = parseRpcCallError(error)
 
     enqueueSnackbar(errObj.userMsg, { variant: errObj.level })
-    //dispatchState({ type: Action.SET_TX_ERR, payload: errObj.fullMsg });
   } finally {
     console.log("tx attempt done")
-
-    //dispatchState({ type: Action.SET_TX_BEINGSENT, payload: undefined });
-    //update all user info
-    //await updateBalanceAndBetInfo(sstate);
+    return res
+    //can update some user info here
   }
 }

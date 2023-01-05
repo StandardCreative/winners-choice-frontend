@@ -11,23 +11,35 @@ import Header from "./components/Header"
 import { MintForm } from "./components/MintForm"
 import NFTGallery from "./components/NFTGallery"
 import { WCFactoryForm } from "./components/WCFactoryForm"
-
+import LogHistory from "./components/LogHistory"
+const mockLogEntry = {
+  txHash: "0x97395b8e77c3c367f459bc4cbdc5b45ce752f9bdea4a08a62e5efb4de628d97c",
+  deployedAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
+  action: "makeNewWCC",
+  vals: {
+    users: ["0xb71b27b14ca7cee82ca214c1332765a727497762", "0xb71b27b14ca7cee82ca214c1332765a727497762", "0xb71b27b14ca7cee82ca214c1332765a727497762", "0xb71b27b14ca7cee82ca214c1332765a727497762"],
+    nftAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
+    unlockInterval: 60    
+  }
+}
 function App() {
   const [accounts, setAccounts] = useState([])
-  const wccAddressRef = useRef("")
   const [nftOwners, setNftOwners] = useState(cfg.initOwners)
   const [metadatas, setMetadatas] = useState([])
+  const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
+  const logsRef = useRef([mockLogEntry])
+  const wccAddressRef = useRef("")
+  const stateRefs = {wcc: wccAddressRef, logs: logsRef}
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const [uiMode, setUiMode] = useState("admin") //"admin", "mint", "logs"
-  //const mintCb = (vals) => ops.sendReadTx("ownerOf", vals);
+
   const mintCb = (vals) => {
     ops
-      .sendTx("mint", vals, wccAddressRef, enqueueSnackbar)
+      .sendTx("mint", vals, stateRefs, enqueueSnackbar)
       .then(() => ops.getOwners(wccAddressRef.current, setNftOwners))
   }
   const erc721CreationCb = (vals) => {
     ops
-      .sendTx("makeNewERC721", vals, wccAddressRef, enqueueSnackbar)
+      .sendTx("makeNewERC721", vals, stateRefs, enqueueSnackbar)
       .then((nftAddr) => {})
   }
   const wcFactoryCb = (vals) => {
@@ -44,7 +56,7 @@ function App() {
         { variant: "info" }
       )
       ops
-        .sendTx("makeNewWCC", vals, wccAddressRef, enqueueSnackbar)
+        .sendTx("makeNewWCC", vals, stateRefs, enqueueSnackbar)
         .then(() =>
           ops.getMetadataAndOwners(
             wccAddressRef.current,
@@ -55,13 +67,13 @@ function App() {
     } else {
       const erc721vals = { nFolios: 12, baseURI: "", suffixURI: "" }
       ops
-        .sendTx("makeNewERC721", erc721vals, wccAddressRef, enqueueSnackbar)
+        .sendTx("makeNewERC721", erc721vals, stateRefs, enqueueSnackbar)
         .then((nftAddr) => {
           if (nftAddr) {
             return ops.sendTx(
               "makeNewWCC",
               { ...vals, nftAddr },
-              wccAddressRef,
+              stateRefs,
               enqueueSnackbar
             )
           }
@@ -110,6 +122,7 @@ function App() {
       {uiMode === "Mint" && (
         <NFTGallery nftOwners={nftOwners} metadatas={metadatas} />
       )}
+      {uiMode==="History"&&<LogHistory logEntries={stateRefs.logs.current}/>}
     </div>
   )
 }
