@@ -9,15 +9,27 @@ const WCFactoryFormInner = ({ account, nftAddr }) => {
   // returns all values and methods from your Formik tag
   const formik = useFormikContext()
   const [showErrs, setShowErrs] = useState(false)
-  const isDisabled=!Boolean(account)
+  const isDisabled = !Boolean(account)
 
   useEffect(() => {
     const cur = formik.values.nftAddr
     if (nftAddr && !cur) {
       console.log("setfieldval", nftAddr)
-      formik.setFieldValue("nftAddr", nftAddr)
+      formik.setFieldValue("nftAddr", nftAddr, false)
     }
-  }, [nftAddr, formik])
+  }, [nftAddr])
+
+  useEffect(() => {
+    //const cur = formik.values.whitelist
+    const whitelist = account
+      ? "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, " + account
+      : ""
+    if (true) {
+      console.log("setfieldval whitelist", whitelist)
+      formik.setFieldValue("whitelist", whitelist, false)
+    }
+  }, [account]) //adding formik to this dependency array, as React recommends, leads
+  //to infinite renders (I guess setFieldValue causes the formik variable to change value)
 
   return (
     <form
@@ -44,12 +56,17 @@ const WCFactoryFormInner = ({ account, nftAddr }) => {
           <TextField
             id="whitelist"
             name="whitelist"
-            label="Whitelist (comma-separated addresses)"
+            label={
+              account
+                ? "Whitelist (comma-separated addresses)"
+                : "Whitelist (connect to auto-fill)"
+            }
             sx={{ width: "100%", maxWidth: "100%" }}
             value={formik.values.whitelist}
             placeholder={
-              "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, " +
-              (account ? account : "0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+              account
+                ? "Comma-separated addresses"
+                : "Connect wallet to auto-fill sample whitelist"
             }
             onChange={formik.handleChange}
             error={showErrs && Boolean(formik.errors.whitelist)}
@@ -60,7 +77,11 @@ const WCFactoryFormInner = ({ account, nftAddr }) => {
           <TextField
             id="nftAddr"
             name="nftAddr"
-            label="NFT contract address"
+            label={
+              nftAddr
+                ? "NFT contract address"
+                : "NFT address (create above to auto-fill)"
+            }
             placeholder="Leave blank to auto-generate new NFT contract"
             sx={{ width: "46ch", maxWidth: "100%" }}
             value={formik.values.nftAddr}

@@ -18,9 +18,9 @@ const validate = (values) => {
 
 export const WCFactoryForm = ({ onSubmit, account, nftAddr }) => {
   const WCFactoryFormInitVals = {
-    whitelist: "",
+    whitelist:  account ? ("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, " + account) : "",    
     nftAddr: nftAddr,
-    unlockInterval: "",
+    unlockInterval: "1",
   }
 
   return (
@@ -34,6 +34,7 @@ export const WCFactoryForm = ({ onSubmit, account, nftAddr }) => {
           actions.setSubmitting(false)
         }}
       >
+        {/* https://stackoverflow.com/questions/66235334/formik-setfieldvalue-inside-a-function */}
         <WCFactoryFormInner account={account} nftAddr={nftAddr} />
       </Formik>
     </>

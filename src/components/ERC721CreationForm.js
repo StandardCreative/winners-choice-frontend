@@ -7,9 +7,9 @@ import { useState } from "react"
 import { validateAddr } from "../utils/utils"
 
 const ERC721CreationFormInitVals = {
-  baseURI: "",
-  suffixURI: "",
-  nFolios: "",
+  baseURI: "ipfs://bafybeig5uvacrxeg4cijeog55jmabopuwlvs3ryuj34brrvjzx6xpiu45u/",
+  suffixURI: ".json",
+  nFolios: "3",
 }
 
 const validate = (values) => {
