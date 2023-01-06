@@ -33,7 +33,7 @@ function App() {
   const [metadatas, setMetadatas] = useState([])
   const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
   const [newlyDeployedERC721Addr, setNewlyDeployedERC721Addr] = useState("")
-  const logsRef = useRef([mockLogEntry])
+  const logsRef = useRef([]) // can initialize with mockLogEntry for testing 
   const wccAddressRef = useRef("")
   const stateRefs = {
     wcc: wccAddressRef,

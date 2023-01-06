@@ -94,7 +94,7 @@ export const getMetadata = async (wccAddr, setMetadatas) => {
   try {
     console.log("fetching n of folios")
     const nFolios = await sendReadTx("nFolios", {}, wccAddr)
-    console.log("got", nFolios, "fetching array of tokenURIs")
+    
     const tokenURIs = await sendReadTx("getAllTokenURIs", {}, wccAddr)
     //get the json metadata for each token (which contains image URIs)
     for (let i = 0; i < nFolios; i++) {
@@ -108,7 +108,7 @@ export const getMetadata = async (wccAddr, setMetadatas) => {
         jsonData.image = `${cfg.ipfsWebPrefix}${jsonData.image.substr(7)}`
 
       jsonDataArray.push(jsonData)
-      console.log("token added to array, setting")
+      console.log("token added to array, setting metadatas")
       setMetadatas(jsonDataArray)
     }
     console.log("json metadata acquired")
@@ -210,7 +210,7 @@ export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
 
       case "makeNewERC721":
         wcf = getWCFContractInstance()
-        console.log("will try to deploy new ERC721 with params: \n", {vals})
+        console.log("will try to deploy new ERC721 with params: \n", { vals })
         txPromise = wcf.makeNewERC721(
           vals.nFolios,
           vals.baseURI,
@@ -286,6 +286,7 @@ The associated NFT contract is ${eventData.curNFTaddress}
 
 The UI will be reset to interact with these new contracts.`)
 
+        stateRefs.setNftAddr(eventData.createdNFTaddress)
         logEntry.deployedAddr = eventData.curWCCaddress
         break
 
