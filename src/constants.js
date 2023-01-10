@@ -2,17 +2,6 @@
 export const showERC721CreationPanel = true
 export const showWCCreationPanel = true
 export const getMediaFromPredefinedLoc = true //https://ipfs.io/ipfs/
-/*
-{name: 'NFKeeTees #0', description: 'These keetees are quite naughty, but they make up …ourself on the back and get yourself an NFKeeTee!', image: 'ipfs://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy/0.jpeg', attributes: Array(2)}
-attributes
-: 
-Array(2)
-0
-: 
-{trait_type: 'Cuteness', value: '91'}
-1
-: 
-{trait_type: 'Naughtiness', value: '21'} */
 
 //LESS IMPORTANT SETTINGS
 export const DUR_SNACKBAR_TX = 60000 //in ms here, in my ts app it was in seconds for some reason
@@ -28,14 +17,14 @@ export const supportedNetworks = [
     id: "5",
     contractAddress: "0x3aF9F0408456b4296A74ad42bAc3879750aC1842", //irrelevant for resettable demo
     //prev "0x589702910E28a5D6F3c08DB3a48833EF0174B78c",
-    WCFactoryAddress: "0xb71b27b14ca7cee82ca214c1332765a727497762", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
+    WCFactoryAddress: "0x929D75B8892Efd41CDE0D5852093379518a863D0", //prev 0xb71b27b14ca7cee82ca214c1332765a727497762", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
     //v1 "0x83292B67BaBF3E141c58526F0a26FB33F4A42Cb0",
   },
   {
     name: "Local (with chain id 1337)",
     id: "1337",
     contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // irrelevant 
-    WCFactoryAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3", // prev "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    WCFactoryAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3", 
   },
 ]
 
@@ -80,14 +69,17 @@ export const txCodes = [
   },
 ]
 
-export const tokenIds = "0 1 2 3 4 5 6 7 8 9 10 11".split(" ")
-export const mediaPrefix =
-  "https://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy.ipfs.nftstorage.link/"
-//"https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"
-export const mediaSuffix = ".jpeg"
-export const nNfts = tokenIds.length
-export const UNMINTED_PLACEHOLDER_ADDR =
-  "0x0000000000000000000000000000000000000000"
+// export const tokenIds = "0 1 2 3 4 5 6 7 8 9 10 11".split(" ")
+// export const mediaPrefix =
+//   "https://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy.ipfs.nftstorage.link/"
+// //"https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"
+// export const mediaSuffix = ".jpeg"
+ //export const nNfts = 12
+ export const UNMINTED_PLACEHOLDER_ADDR =
+ "0x0000000000000000000000000000000000000000"
+
+ export const WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET =
+ "0x0000000000000000000000000000000000000000"
 
 export const PLACEHOLDER_OWNER = "" //"Fetching owner..."
-export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)
+//export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)

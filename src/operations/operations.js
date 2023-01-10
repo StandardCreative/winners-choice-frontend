@@ -72,11 +72,12 @@ const parseRpcCallError = (error) => {
   } else if (res.fullMsg.indexOf("ERC721: invalid token ID") + 1) {
     res.userMsg = "no owner" //shouldn't happen now that we have getOwner
   } else if (res.fullMsg.indexOf("already minted") + 1) {
-    res.userMsg = "This NFKeeTee was already meownted, try another!"
-  } else if (res.fullMsg.indexOf("can only mint 1") + 1) {
-    res.userMsg = "You already meownted your NFKeeTee"
-  } else if (res.fullMsg.indexOf("not whitelisted") + 1) {
-    res.userMsg = "You can't have an NFKeeTee, you're not on the whitelist"
+    res.userMsg = "This folio has already been minted, try another!"
+  } else if (res.fullMsg.indexOf("no allowance") + 1) {
+    res.userMsg = "You have no minting allowance"
+    // } else if (res.fullMsg.indexOf("not whitelisted") + 1) {
+    //   res.userMsg = "You can't have an NFKeeTee, you're not on the whitelist"
+    // }
   } else console.log("got error:", res)
   return res
 }
@@ -91,10 +92,14 @@ export const getMetadataAndOwners = async (
 
 export const getMetadata = async (wccAddr, setMetadatas) => {
   const jsonDataArray = []
+  if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
+    setMetadatas(jsonDataArray)
+    return
+  }
   try {
     console.log("fetching n of folios")
     const nFolios = await sendReadTx("nFolios", {}, wccAddr)
-    
+
     const tokenURIs = await sendReadTx("getAllTokenURIs", {}, wccAddr)
     //get the json metadata for each token (which contains image URIs)
     for (let i = 0; i < nFolios; i++) {
@@ -142,6 +147,10 @@ export const getMetadata = async (wccAddr, setMetadatas) => {
 // }
 
 export const getOwners = async (wccAddr, setNftOwners) => {
+  if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
+    setNftOwners([])
+    return
+  }
   try {
     const ownersReadOnly = await sendReadTx("getAllOwners", {}, wccAddr)
     const owners = [...ownersReadOnly]

@@ -18,7 +18,7 @@ const validate = (values) => {
 
 export const WCFactoryForm = ({ onSubmit, account, nftAddr }) => {
   const WCFactoryFormInitVals = {
-    whitelist:  account ? ("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, " + account) : "",    
+    whitelist:  account ? (account + ", " + account) : "", //same in useEffect in inner comp
     nftAddr: nftAddr,
     unlockInterval: "1",
   }

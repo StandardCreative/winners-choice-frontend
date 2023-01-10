@@ -6,7 +6,7 @@ import NFTCard from "./NFTCard";
 const NFTGallery = ({ nftOwners, metadatas }) => {
   return (
     <>
-      <Typography variant="h5" color="primary" textAlign="center">Artwork</Typography>
+      <Typography variant="h5" color="primary" textAlign="center">Art</Typography>
       <Stack
         direction="row"
         flexWrap="wrap"
@@ -18,7 +18,7 @@ const NFTGallery = ({ nftOwners, metadatas }) => {
             <NFTCard
               key={ind}
               tokenId={ind}
-              owner={nftOwners[ind]}
+              owner={nftOwners[ind] ?? cfg.PLACEHOLDER_OWNER}
               jsonData={jsonData}
             ></NFTCard>
           );

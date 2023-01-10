@@ -58,6 +58,7 @@ function Header({
   }
 
   const connectWalletSimple = async () => {
+    console.log("connectwalletsimple");
     try {
       const newAccs = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -79,10 +80,7 @@ function Header({
       await connectWalletSimple()
       if (metamaskCallbacksAlreadySet) return
 
-      //console.log("ssetting cbs")
       // We reinitialize it whenever the user changes their account.
-      //TODO should probably only set up this callback once, but what if user clicks
-      //connect, then disconnect, then connect again?
       window.ethereum.on("accountsChanged", ([newAddress]) => {
         console.log("on accountsChanged")
         // `accountsChanged` event can be triggered with an undefined newAddress.
@@ -98,9 +96,8 @@ function Header({
       })
 
       //if the network is changed, just connect again normally
-      //TODO see above
       window.ethereum.on("chainChanged", ([]) => {
-        console.log("chain chng")
+        console.log("chain changed")
         connectWalletSimple()
       })
       setMetamaskCallbacksAlreadySet(true)

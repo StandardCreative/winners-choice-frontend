@@ -29,7 +29,7 @@ const mockLogEntry = {
 }
 function App() {
   const [accounts, setAccounts] = useState([])
-  const [nftOwners, setNftOwners] = useState(cfg.initOwners)
+  const [nftOwners, setNftOwners] = useState([])
   const [metadatas, setMetadatas] = useState([])
   const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
   const [newlyDeployedERC721Addr, setNewlyDeployedERC721Addr] = useState("")
