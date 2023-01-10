@@ -75,10 +75,13 @@ const parseRpcCallError = (error) => {
     res.userMsg = "This folio has already been minted, try another!"
   } else if (res.fullMsg.indexOf("no allowance") + 1) {
     res.userMsg = "You have no minting allowance"
-    // } else if (res.fullMsg.indexOf("not whitelisted") + 1) {
-    //   res.userMsg = "You can't have an NFKeeTee, you're not on the whitelist"
-    // }
-  } else console.log("got error:", res)
+  } else if (res.fullMsg.indexOf("no such folio") + 1) {
+    res.userMsg = "There is no folio with this number"
+  }
+  // } else if (res.fullMsg.indexOf("not whitelisted") + 1) {
+  //   res.userMsg = "You can't have an NFKeeTee, you're not on the whitelist"
+  // }
+  else console.log("got error:", res)
   return res
 }
 export const getMetadataAndOwners = async (
