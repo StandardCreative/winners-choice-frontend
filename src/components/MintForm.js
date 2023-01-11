@@ -4,7 +4,11 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import { Formik } from "formik"
 import { useState } from "react"
+
 import { validateAddr } from "../utils/utils"
+import * as cfg from "../constants"
+
+import LogHistoryForElement from "./LogHistoryForElement"
 
 const MintFormInitVals = {
   tokenIdStr: "",
@@ -24,7 +28,7 @@ const validate = (values) => {
   return errors
 }
 
-export const MintForm = ({ onSubmit, account }) => {
+export const MintForm = ({ onSubmit, account, logs }) => {
   const [showErrs, setShowErrs] = useState(false)
   const isDisabled = !Boolean(account)
   return (
@@ -85,6 +89,7 @@ export const MintForm = ({ onSubmit, account }) => {
                   Mint
                 </Button>
               </Stack>
+              {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="mint"/>}
             </Stack>
           </form>
         )}

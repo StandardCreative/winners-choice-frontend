@@ -3,7 +3,6 @@ import { useRef, useState } from "react"
 
 import "./App.css"
 
-import * as cfg from "./constants"
 import * as ops from "./operations/operations"
 
 import { ERC721CreationForm } from "./components/ERC721CreationForm"
@@ -33,24 +32,25 @@ function App() {
   const [metadatas, setMetadatas] = useState([])
   const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
   const [newlyDeployedERC721Addr, setNewlyDeployedERC721Addr] = useState("")
-  const logsRef = useRef([]) // can initialize with mockLogEntry for testing 
+  const [logs, setLogs] = useState([]) // can initialize with mockLogEntry for testing
   const wccAddressRef = useRef("")
-  const stateRefs = {
-    wcc: wccAddressRef,
-    logs: logsRef,
-    nftAddr: newlyDeployedERC721Addr,
-    setNftAddr: setNewlyDeployedERC721Addr,
-  }
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const dataBundle = { //to pass to eg sendTx
+    wcc: wccAddressRef,
+    logs,
+    setLogs,
+    nftAddr: newlyDeployedERC721Addr,
+    setNftAddr: setNewlyDeployedERC721Addr,//TODO incl enqueue...
+  }
 
   const mintCb = (vals) => {
     ops
-      .sendTx("mint", { ...vals }, stateRefs, enqueueSnackbar)
+      .sendTx("mint", { ...vals }, dataBundle, enqueueSnackbar)
       .then(() => ops.getOwners(wccAddressRef.current, setNftOwners))
   }
   const erc721CreationCb = (vals) => {
     ops
-      .sendTx("makeNewERC721", { ...vals }, stateRefs, enqueueSnackbar)
+      .sendTx("makeNewERC721", { ...vals }, dataBundle, enqueueSnackbar)
       .then((nftAddr) => {})
   }
   const wcFactoryCb = (vals) => {
@@ -67,7 +67,7 @@ function App() {
         { variant: "info" }
       )
       ops
-        .sendTx("makeNewWCC", { ...vals }, stateRefs, enqueueSnackbar)
+        .sendTx("makeNewWCC", { ...vals }, dataBundle, enqueueSnackbar)
         .then(() =>
           ops.getMetadataAndOwners(
             wccAddressRef.current,
@@ -78,13 +78,13 @@ function App() {
     } else {
       const erc721vals = { nFolios: 12, baseURI: "", suffixURI: "" }
       ops
-        .sendTx("makeNewERC721", erc721vals, stateRefs, enqueueSnackbar)
+        .sendTx("makeNewERC721", erc721vals, dataBundle, enqueueSnackbar)
         .then((nftAddr) => {
           if (nftAddr) {
             return ops.sendTx(
               "makeNewWCC",
               { ...vals, nftAddr },
-              stateRefs,
+              dataBundle,
               enqueueSnackbar
             )
           }
@@ -114,14 +114,16 @@ function App() {
           onSubmit={erc721CreationCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
+          logs={logs}
         />
       )}
       {uiMode === "Admin" && (
         <WCFactoryForm
           onSubmit={wcFactoryCb}
           account={accounts[0]}
-          setNftOwners={setNftOwners}
-          nftAddr={stateRefs.nftAddr}
+          // setNftOwners={setNftOwners}
+          nftAddr={dataBundle.nftAddr}
+          logs={logs}
         />
       )}
       {uiMode === "Mint" && (
@@ -129,13 +131,14 @@ function App() {
           onSubmit={mintCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
+          logs={logs}
         />
       )}
       {uiMode === "Mint" && (
         <NFTGallery nftOwners={nftOwners} metadatas={metadatas} />
       )}
       {uiMode === "History" && (
-        <LogHistory logEntries={stateRefs.logs.current} />
+        <LogHistory logEntries={logs} />
       )}
     </div>
   )

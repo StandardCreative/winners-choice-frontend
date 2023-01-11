@@ -5,7 +5,10 @@ import TextField from "@mui/material/TextField"
 import { useFormikContext } from "formik"
 import { useEffect, useState } from "react"
 
-const WCFactoryFormInner = ({ account, nftAddr }) => {
+import LogHistoryForElement from "./LogHistoryForElement"
+import * as cfg from "../constants"
+
+const WCFactoryFormInner = ({ account, nftAddr, logs}) => {
   // returns all values and methods from your Formik tag
   const formik = useFormikContext()
   const [showErrs, setShowErrs] = useState(false)
@@ -110,6 +113,7 @@ const WCFactoryFormInner = ({ account, nftAddr }) => {
             Create new WC scenario
           </Button>
         </Stack>
+        {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="makeNewWCC"/>}
       </Stack>
     </form>
   )

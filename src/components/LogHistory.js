@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material"
-import Accordion from '@mui/material/Accordion';
 
 import LogEntry from "./LogEntry"
 

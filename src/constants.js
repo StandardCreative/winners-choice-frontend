@@ -1,7 +1,8 @@
 //SETTINGS
 export const showERC721CreationPanel = true
 export const showWCCreationPanel = true
-export const getMediaFromPredefinedLoc = true //https://ipfs.io/ipfs/
+export const showMsgsInBrowserAlerts = false
+export const isDevUImode = true
 
 //LESS IMPORTANT SETTINGS
 export const DUR_SNACKBAR_TX = 60000 //in ms here, in my ts app it was in seconds for some reason
@@ -23,8 +24,8 @@ export const supportedNetworks = [
   {
     name: "Local (with chain id 1337)",
     id: "1337",
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // irrelevant 
-    WCFactoryAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3", 
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // irrelevant
+    WCFactoryAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
   },
 ]
 
@@ -74,12 +75,12 @@ export const txCodes = [
 //   "https://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy.ipfs.nftstorage.link/"
 // //"https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"
 // export const mediaSuffix = ".jpeg"
- //export const nNfts = 12
- export const UNMINTED_PLACEHOLDER_ADDR =
- "0x0000000000000000000000000000000000000000"
+//export const nNfts = 12
+export const UNMINTED_PLACEHOLDER_ADDR =
+  "0x0000000000000000000000000000000000000000"
 
- export const WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET =
- "0x0000000000000000000000000000000000000000"
+export const WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET =
+  "0x0000000000000000000000000000000000000000"
 
 export const PLACEHOLDER_OWNER = "" //"Fetching owner..."
 //export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)

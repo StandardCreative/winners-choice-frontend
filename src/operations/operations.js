@@ -206,7 +206,7 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
   }
 }
 
-export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
+export const sendTx = async (funcName, vals, dataBundle, enqueueSnackbar) => {
   let res
   console.log("sendtx: ", funcName)
   try {
@@ -215,7 +215,7 @@ export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
     switch (funcName) {
       case "mint":
         console.log("will try to mint tokenId ", vals.tokenIdStr)
-        txPromise = getContractInstance(stateRefs.wcc.current).mint(
+        txPromise = getContractInstance(dataBundle.wcc.current).mint(
           +vals.tokenIdStr
         )
         break
@@ -291,14 +291,15 @@ export const sendTx = async (funcName, vals, stateRefs, enqueueSnackbar) => {
       case "makeNewWCC":
         eventData = receipt.events[0].args
         console.log({ eventData })
-        stateRefs.wcc.current = eventData.curWCCaddress
-        alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
+        dataBundle.wcc.current = eventData.curWCCaddress
+        if (cfg.showMsgsInBrowserAlerts)
+          alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
       
 The associated NFT contract is ${eventData.curNFTaddress}
 
 The UI will be reset to interact with these new contracts.`)
 
-        stateRefs.setNftAddr(eventData.createdNFTaddress)
+        dataBundle.setNftAddr(eventData.createdNFTaddress)
         logEntry.deployedAddr = eventData.curWCCaddress
         break
 
@@ -306,13 +307,15 @@ The UI will be reset to interact with these new contracts.`)
         eventData = receipt.events[1].args
         console.log({ eventData })
 
-        alert(`Deployed new NFT contract at ${eventData.createdNFTaddress}.`)
-        stateRefs.setNftAddr(eventData.createdNFTaddress)
+        if (cfg.showMsgsInBrowserAlerts)
+          alert(`Deployed new NFT contract at ${eventData.createdNFTaddress}.`)
+
+        dataBundle.setNftAddr(eventData.createdNFTaddress)
         logEntry.deployedAddr = eventData.createdNFTaddress
         res = eventData.createdNFTaddress
         break
     }
-    stateRefs.logs.current.push(logEntry)
+    dataBundle.setLogs((logs) => [...logs, logEntry])
   } catch (error) {
     const errObj = parseRpcCallError(error)
 
