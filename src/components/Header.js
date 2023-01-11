@@ -25,6 +25,7 @@ function Header({
   setAccounts,
   setNftOwners,
   setMetadatas,
+  setNFolios,
   setUiMode,
 }) {
   const isConnected = Boolean(accounts[0])
@@ -58,7 +59,7 @@ function Header({
   }
 
   const connectWalletSimple = async () => {
-    console.log("connectwalletsimple");
+    console.log("connectwalletsimple")
     try {
       const newAccs = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -68,7 +69,12 @@ function Header({
       wccAddressRef.current = await sendReadTx("getWCCaddress") //don't need other args
       console.log(`got current WCC address: ${wccAddressRef.current}`)
 
-      getMetadataAndOwners(wccAddressRef.current, setNftOwners, setMetadatas) //when we call it accounts are not set yet but
+      getMetadataAndOwners(
+        wccAddressRef.current,
+        setNftOwners,
+        setMetadatas,
+        setNFolios
+      ) //when we call it accounts are not set yet but
       //it's ok because we don't use them when fetching owners
     } catch (e) {
       console.log(e)

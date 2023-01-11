@@ -84,3 +84,9 @@ export const WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET =
 
 export const PLACEHOLDER_OWNER = "" //"Fetching owner..."
 //export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)
+
+export const placeholderMetadata = {
+  name: "What's my name?", 
+  description: "Could not fetch metadata for this item. If it's located on IPFS, this is unfortunately a common issue: often a specific file can't be fetched even after many retries",
+  image: "https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+}

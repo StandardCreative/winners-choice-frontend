@@ -3,10 +3,6 @@ import { Box, Stack } from "@mui/material"
 import LogEntryForElement from "./LogEntryForElement"
 
 const LogHistoryForElement = ({ logEntries, elementType }) => {
-  logEntries.forEach((entry) => {
-    console.log(entry.action, entry.action === elementType)
-  })
-
   return (
     <Box sx={{margin:"0 0 0 0"}}>
       {logEntries.length === 0 ? (

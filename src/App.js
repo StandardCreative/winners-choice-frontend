@@ -28,6 +28,7 @@ const mockLogEntry = {
 }
 function App() {
   const [accounts, setAccounts] = useState([])
+  const [nFolios, setNFolios] = useState(0)
   const [nftOwners, setNftOwners] = useState([])
   const [metadatas, setMetadatas] = useState([])
   const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
@@ -72,7 +73,8 @@ function App() {
           ops.getMetadataAndOwners(
             wccAddressRef.current,
             setNftOwners,
-            setMetadatas
+            setMetadatas,
+            setNFolios
           )
         )
     } else {
@@ -93,7 +95,8 @@ function App() {
           ops.getMetadataAndOwners(
             wccAddressRef.current,
             setNftOwners,
-            setMetadatas
+            setMetadatas,
+            setNFolios
           )
         )
     }
@@ -108,6 +111,7 @@ function App() {
         setNftOwners={setNftOwners}
         setMetadatas={setMetadatas}
         setUiMode={setUiMode}
+        setNFolios={setNFolios}
       />
       {uiMode === "Admin" && (
         <ERC721CreationForm
@@ -135,7 +139,7 @@ function App() {
         />
       )}
       {uiMode === "Mint" && (
-        <NFTGallery nftOwners={nftOwners} metadatas={metadatas} />
+        <NFTGallery nftOwners={nftOwners} metadatas={metadatas} nFolios={nFolios} />
       )}
       {uiMode === "History" && (
         <LogHistory logEntries={logs} />

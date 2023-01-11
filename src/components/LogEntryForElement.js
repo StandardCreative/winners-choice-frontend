@@ -17,7 +17,6 @@ const CustomLink = styled(Link)(({ theme }) => ({
 }))
 
 const LogEntryForElement = ({ entry, entryNum }) => {
-    console.log(entry.action);
   let description
   const params = []
   switch (entry.action) {

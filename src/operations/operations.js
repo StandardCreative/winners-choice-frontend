@@ -87,21 +87,24 @@ const parseRpcCallError = (error) => {
 export const getMetadataAndOwners = async (
   wccAddr,
   setNftOwners,
-  setMetadatas
+  setMetadatas,
+  setNFolios
 ) => {
-  await getMetadata(wccAddr, setMetadatas)
+  await getMetadata(wccAddr, setMetadatas, setNFolios)
   await getOwners(wccAddr, setNftOwners)
 }
 
-export const getMetadata = async (wccAddr, setMetadatas) => {
+export const getMetadata = async (wccAddr, setMetadatas, setNFolios) => {
   const jsonDataArray = []
   if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
     setMetadatas(jsonDataArray)
+    setNFolios(0)
     return
   }
   try {
     console.log("fetching n of folios")
     const nFolios = await sendReadTx("nFolios", {}, wccAddr)
+    setNFolios(nFolios)
 
     const tokenURIs = await sendReadTx("getAllTokenURIs", {}, wccAddr)
     //get the json metadata for each token (which contains image URIs)
@@ -111,13 +114,21 @@ export const getMetadata = async (wccAddr, setMetadatas) => {
         uri = `${cfg.ipfsWebPrefix}${tokenURIs[i].substr(7)}`
       console.log("fetching from", uri)
 
-      const jsonData = await fetch(uri).then((resp) => resp.json())
+      // unfortunately fetching from ipfs sometimes fails, even after many retries
+      // for now we will then substitute placeholder metadata
+      let jsonData
+      try {
+        jsonData = await fetch(uri).then((resp) => resp.json())
+      } catch (e) {
+        jsonData = cfg.placeholderMetadata
+      }
       if (jsonData.image?.startsWith("ipfs://"))
         jsonData.image = `${cfg.ipfsWebPrefix}${jsonData.image.substr(7)}`
 
       jsonDataArray.push(jsonData)
-      console.log("token added to array, setting metadatas")
-      setMetadatas(jsonDataArray)
+      console.log("setting metadatas", jsonDataArray.length)
+      setMetadatas([...jsonDataArray])
+      //setMetadatas(jsonDataArray => [...jsonDataArray])
     }
     console.log("json metadata acquired")
   } catch (e) {
