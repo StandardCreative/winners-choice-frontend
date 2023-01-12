@@ -26,6 +26,7 @@ function Header({
   setNftOwners,
   setMetadatas,
   setNFolios,
+  setUnlockTime,
   setUiMode,
 }) {
   const isConnected = Boolean(accounts[0])
@@ -68,12 +69,15 @@ function Header({
       setAccounts(newAccs)
       wccAddressRef.current = await sendReadTx("getWCCaddress") //don't need other args
       console.log(`got current WCC address: ${wccAddressRef.current}`)
+      console.log("cwsimple", {setUnlockTime, a: newAccs[0]});
 
       getMetadataAndOwners(
         wccAddressRef.current,
         setNftOwners,
         setMetadatas,
-        setNFolios
+        setNFolios,
+        setUnlockTime,
+        newAccs[0]
       ) //when we call it accounts are not set yet but
       //it's ok because we don't use them when fetching owners
     } catch (e) {

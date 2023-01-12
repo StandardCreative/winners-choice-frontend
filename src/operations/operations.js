@@ -88,10 +88,39 @@ export const getMetadataAndOwners = async (
   wccAddr,
   setNftOwners,
   setMetadatas,
-  setNFolios
+  setNFolios,
+  setUnlockTime,
+  userAddr
 ) => {
+  console.log({setUnlockTime, userAddr});
+  await getUnlockTime(wccAddr, setUnlockTime, userAddr)
   await getMetadata(wccAddr, setMetadatas, setNFolios)
   await getOwners(wccAddr, setNftOwners)
+}
+export const getUnlockTimeAndOwners = async (
+  wccAddr,
+  setNftOwners,
+  setUnlockTime,
+  userAddr
+) => {
+  
+  await getUnlockTime(wccAddr, setUnlockTime, userAddr)
+  await getOwners(wccAddr, setNftOwners)
+}
+
+export const getUnlockTime = async (wccAddr, setUnlockTime, userAddr) => {
+  console.log({setUnlockTime, userAddr});
+  if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
+    setUnlockTime(cfg.PLACEHOLDER_UNLOCK_TIME)
+    return
+  }
+  try {
+    console.log("fetching unlock time")
+    const unlockTime = await sendReadTx("getUnlockTimestamp", {userAddr}, wccAddr)
+    setUnlockTime(unlockTime)
+  } catch(e){
+    console.log(e);
+  }
 }
 
 export const getMetadata = async (wccAddr, setMetadatas, setNFolios) => {
@@ -200,6 +229,9 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
         break
       case "nFolios":
         resPromise = getContractInstance(wccAddr).nFolios()
+        break
+      case "getUnlockTimestamp":
+        resPromise=getContractInstance(wccAddr).getUnlockTimestamp(vals.userAddr)
         break
       case "getAllTokenURIs":
         resPromise = getContractInstance(wccAddr).getAllTokenURIs()

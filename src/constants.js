@@ -82,6 +82,8 @@ export const UNMINTED_PLACEHOLDER_ADDR =
 export const WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET =
   "0x0000000000000000000000000000000000000000"
 
+export const PLACEHOLDER_UNLOCK_TIME = 0
+
 export const PLACEHOLDER_OWNER = "" //"Fetching owner..."
 //export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)
 

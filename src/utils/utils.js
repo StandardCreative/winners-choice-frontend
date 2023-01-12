@@ -2,6 +2,10 @@ import { ethers } from "ethers";
 
 export const ADDR_LEN = 42
 
+export function getTimestampInSeconds() {
+  return Math.floor(Date.now() / 1000)
+}
+
 export const validateAddr = (addr)=> {
   if (addr.length !== ADDR_LEN) {
     return `Address must have ${ADDR_LEN} characters`;

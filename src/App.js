@@ -11,6 +11,7 @@ import LogHistory from "./components/LogHistory"
 import { MintForm } from "./components/MintForm"
 import NFTGallery from "./components/NFTGallery"
 import { WCFactoryForm } from "./components/WCFactoryForm"
+import { PLACEHOLDER_UNLOCK_TIME } from "./constants"
 const mockLogEntry = {
   txHash: "0x97395b8e77c3c367f459bc4cbdc5b45ce752f9bdea4a08a62e5efb4de628d97c",
   deployedAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
@@ -29,6 +30,7 @@ const mockLogEntry = {
 function App() {
   const [accounts, setAccounts] = useState([])
   const [nFolios, setNFolios] = useState(0)
+  const [unlockTime, setUnlockTime] = useState(PLACEHOLDER_UNLOCK_TIME)
   const [nftOwners, setNftOwners] = useState([])
   const [metadatas, setMetadatas] = useState([])
   const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
@@ -74,7 +76,9 @@ function App() {
             wccAddressRef.current,
             setNftOwners,
             setMetadatas,
-            setNFolios
+            setNFolios,
+            setUnlockTime,
+            accounts[0]
           )
         )
     } else {
@@ -96,7 +100,9 @@ function App() {
             wccAddressRef.current,
             setNftOwners,
             setMetadatas,
-            setNFolios
+            setNFolios,
+            setUnlockTime,
+            accounts[0]
           )
         )
     }
@@ -112,6 +118,7 @@ function App() {
         setMetadatas={setMetadatas}
         setUiMode={setUiMode}
         setNFolios={setNFolios}
+        setUnlockTime={setUnlockTime}
       />
       {uiMode === "Admin" && (
         <ERC721CreationForm
@@ -134,7 +141,8 @@ function App() {
         <MintForm
           onSubmit={mintCb}
           account={accounts[0]}
-          setNftOwners={setNftOwners}
+          unlockTime={unlockTime}
+          // setNftOwners={setNftOwners}
           logs={logs}
         />
       )}

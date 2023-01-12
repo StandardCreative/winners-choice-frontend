@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField"
 import { Formik } from "formik"
 import { useState } from "react"
 
-import { validateAddr } from "../utils/utils"
+import { getTimestampInSeconds, validateAddr } from "../utils/utils"
 import * as cfg from "../constants"
 
 import LogHistoryForElement from "./LogHistoryForElement"
@@ -28,9 +28,10 @@ const validate = (values) => {
   return errors
 }
 
-export const MintForm = ({ onSubmit, account, logs }) => {
+export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
   const [showErrs, setShowErrs] = useState(false)
   const isDisabled = !Boolean(account)
+  const curT = getTimestampInSeconds()
   return (
     <>
       <Formik
@@ -84,10 +85,11 @@ export const MintForm = ({ onSubmit, account, logs }) => {
                 />
               </Stack>
 
-              <Stack direction="row" justifyContent="left">
+              <Stack direction="row" justifyContent="left" alignItems="center" gap="16px">
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Mint
                 </Button>
+                <Typography>{`Unlock time: ${unlockTime} Cur time ${curT}`} </Typography>
               </Stack>
               {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="mint"/>}
             </Stack>
