@@ -110,7 +110,7 @@ export const getUnlockTimeAndOwners = async (
 
 export const getUnlockTime = async (wccAddr, setUnlockTime, userAddr) => {
   console.log({setUnlockTime, userAddr});
-  if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
+  if (wccAddr === cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
     setUnlockTime(cfg.PLACEHOLDER_UNLOCK_TIME)
     return
   }
@@ -125,7 +125,7 @@ export const getUnlockTime = async (wccAddr, setUnlockTime, userAddr) => {
 
 export const getMetadata = async (wccAddr, setMetadatas, setNFolios) => {
   const jsonDataArray = []
-  if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
+  if (wccAddr === cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
     setMetadatas(jsonDataArray)
     setNFolios(0)
     return
@@ -190,7 +190,7 @@ export const getMetadata = async (wccAddr, setMetadatas, setNFolios) => {
 // }
 
 export const getOwners = async (wccAddr, setNftOwners) => {
-  if (wccAddr == cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
+  if (wccAddr === cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
     setNftOwners([])
     return
   }

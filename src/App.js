@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import "./App.css"
 
@@ -28,6 +28,7 @@ const mockLogEntry = {
   },
 }
 function App() {
+  const [timerCount, setTimerCount] = useState(0)
   const [accounts, setAccounts] = useState([])
   const [nFolios, setNFolios] = useState(0)
   const [unlockTime, setUnlockTime] = useState(PLACEHOLDER_UNLOCK_TIME)
@@ -38,18 +39,38 @@ function App() {
   const [logs, setLogs] = useState([]) // can initialize with mockLogEntry for testing
   const wccAddressRef = useRef("")
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const dataBundle = { //to pass to eg sendTx
+  const dataBundle = {
+    //to pass to eg sendTx
     wcc: wccAddressRef,
     logs,
     setLogs,
     nftAddr: newlyDeployedERC721Addr,
-    setNftAddr: setNewlyDeployedERC721Addr,//TODO incl enqueue...
+    setNftAddr: setNewlyDeployedERC721Addr, //TODO incl enqueue...
   }
+
+  //we will have a global counter, even though it's not necessary for just the unlock
+  //time countdown, because in the future we might want to periodically refetch some info
+  //console.log("App rerender", timerCount)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimerCount((x) => x + 1)
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const mintCb = (vals) => {
     ops
       .sendTx("mint", { ...vals }, dataBundle, enqueueSnackbar)
-      .then(() => ops.getOwners(wccAddressRef.current, setNftOwners))
+      .then(() =>
+        ops.getUnlockTimeAndOwners(
+          wccAddressRef.current,
+          setNftOwners,
+          setUnlockTime,
+          accounts[0]
+        )
+      )
   }
   const erc721CreationCb = (vals) => {
     ops
@@ -58,7 +79,7 @@ function App() {
   }
   const wcFactoryCb = (vals) => {
     vals.users = vals.whitelist.split(",").map((st) => st.trim())
-    if (!vals.unlockInterval) vals.unlockInterval = "1"
+    if (!vals.unlockInterval) vals.unlockInterval = "2"
 
     if (vals.nftAddr) {
       // alert(
@@ -147,11 +168,13 @@ function App() {
         />
       )}
       {uiMode === "Mint" && (
-        <NFTGallery nftOwners={nftOwners} metadatas={metadatas} nFolios={nFolios} />
+        <NFTGallery
+          nftOwners={nftOwners}
+          metadatas={metadatas}
+          nFolios={nFolios}
+        />
       )}
-      {uiMode === "History" && (
-        <LogHistory logEntries={logs} />
-      )}
+      {uiMode === "History" && <LogHistory logEntries={logs} />}
     </div>
   )
 }

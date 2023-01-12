@@ -4,7 +4,6 @@ import * as cfg from "../constants"
 import NFTCard from "./NFTCard"
 
 const NFTGallery = ({ nftOwners, metadatas, nFolios}) => {
-  console.log("nftgallery, len metadatas ", metadatas.length)
   const nToFetch = nFolios - metadatas.length
   let infotxt = `Total pieces in the collection: ${nFolios}`
   if (nToFetch) infotxt += `, still fetching: ${nToFetch}`

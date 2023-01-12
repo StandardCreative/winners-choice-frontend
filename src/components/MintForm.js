@@ -32,6 +32,20 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
   const [showErrs, setShowErrs] = useState(false)
   const isDisabled = !Boolean(account)
   const curT = getTimestampInSeconds()
+  
+  let unlockCountdownStr = ""
+  if (unlockTime === cfg.PLACEHOLDER_UNLOCK_TIME) {}//no unlock time fetched
+  else if (unlockTime.gte("1000000000000"))
+  unlockCountdownStr = "No NFT allowance"
+  else {
+    const secTillUnlock = unlockTime.toNumber() - curT
+    if (secTillUnlock < -15)
+    unlockCountdownStr = "Unlocked"
+    else if (secTillUnlock <= 0)
+    unlockCountdownStr = "Unlocking"
+    else unlockCountdownStr=`Wait ${secTillUnlock} sec`
+  }
+
   return (
     <>
       <Formik
@@ -89,7 +103,8 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Mint
                 </Button>
-                <Typography>{`Unlock time: ${unlockTime} Cur time ${curT}`} </Typography>
+                <Typography>{`${unlockCountdownStr}`} </Typography>
+                {/* <Typography>{`Unlock time: ${unlockTime} Cur time ${cur} ${unlockCountdownStr}`} </Typography> */}
               </Stack>
               {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="mint"/>}
             </Stack>

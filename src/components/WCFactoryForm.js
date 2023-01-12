@@ -20,7 +20,7 @@ export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs }) => {
   const WCFactoryFormInitVals = {
     whitelist:  account ? (account + ", " + account) : "", //same in useEffect in inner comp
     nftAddr: nftAddr,
-    unlockInterval: "1",
+    unlockInterval: "2",
   }
 
   return (
