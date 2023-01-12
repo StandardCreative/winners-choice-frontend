@@ -319,7 +319,7 @@ export const sendTx = async (funcName, vals, dataBundle, enqueueSnackbar) => {
 
     // If we got here, the transaction was successful
     enqueueSnackbar(`Tx ${hashShort} complete`, {
-      autoHideDuration: cfg.DUR_SNACKBAR,
+      autoHideDuration: cfg.DUR_SNACKBAR_SUCCESS,
       variant: "success",
     })
     console.log("Tx successful")

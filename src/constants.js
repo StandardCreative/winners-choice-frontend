@@ -5,8 +5,9 @@ export const showMsgsInBrowserAlerts = false
 export const isDevUImode = true
 
 //LESS IMPORTANT SETTINGS
-export const DUR_SNACKBAR_TX = 60000 //in ms here, in my ts app it was in seconds for some reason
+export const DUR_SNACKBAR_TX = 180000 //in ms here, in my ts app it was in seconds for some reason
 export const DUR_SNACKBAR = 15000
+export const DUR_SNACKBAR_SUCCESS = 4000 
 
 //BE CAREFUL EDITING ANY ITEMS BELOW
 export const ipfsWebPrefix = "https://ipfs.io/ipfs/"
