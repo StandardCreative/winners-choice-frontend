@@ -7,6 +7,7 @@ import { useState } from "react"
 
 import * as cfg from "../constants"
 import { validateAddr } from "../utils/utils"
+import Info from "./Info"
 import LogHistoryForElement from "./LogHistoryForElement"
 
 const ERC721CreationFormInitVals = {
@@ -61,48 +62,66 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
                 color="text.secondary"
                 marginBottom="16px"
               >
-                Usage example: &nbsp;&nbsp;Put number between 1 and 12 for
-                "Number of folios" &nbsp;&nbsp;•&nbsp;&nbsp; Leave other fields
-                blank
+                Here you can create a fresh NFT contract that will work with WC.
+                Simplest usage: just click the button to use pre-filled
+                settings.
               </Typography>
               <Stack
                 direction="row"
                 flexWrap="wrap"
-                sx={{ gridColumnGap: "8px" }}
+                sx={{ gridColumnGap: "16px" }}
               >
-                <TextField
-                  id="nFolios"
-                  name="nFolios"
-                  label="Number of folios"
-                  sx={{ width: "30ch", maxWidth: "100%" }}
-                  value={formik.values.nFolios}
-                  placeholder="<= 12 for pre-made art"
-                  onChange={formik.handleChange}
-                  error={showErrs && Boolean(formik.errors.nFolios)}
-                  helperText={showErrs ? formik.errors.nFolios ?? " " : " "}
-                />
-                <TextField
-                  id="baseURI"
-                  name="baseURI"
-                  label="Base URI"
-                  placeholder="Leave blank to use pre-made art"
-                  sx={{ width: "30ch", maxWidth: "100%" }}
-                  value={formik.values.baseURI}
-                  onChange={formik.handleChange}
-                  error={showErrs && Boolean(formik.errors.baseURI)}
-                  helperText={showErrs ? formik.errors.baseURI ?? " " : " "}
-                />
-                <TextField
-                  id="suffixURI"
-                  name="suffixURI"
-                  label="Suffix for URIs"
-                  placeholder=".json"
-                  sx={{ width: "15ch", maxWidth: "100%" }}
-                  value={formik.values.suffixURI}
-                  onChange={formik.handleChange}
-                  error={showErrs && Boolean(formik.errors.suffixURI)}
-                  helperText={showErrs ? formik.errors.suffixURI ?? " " : " "}
-                />
+                <Stack direction="row" sx={{ maxWidth: "100%" }}>
+                  <TextField
+                    id="nFolios"
+                    name="nFolios"
+                    label="Number of folios"
+                    sx={{ width: "30ch", maxWidth: "100%" }}
+                    value={formik.values.nFolios}
+                    placeholder="<= 12 for pre-made art"
+                    onChange={formik.handleChange}
+                    error={showErrs && Boolean(formik.errors.nFolios)}
+                    helperText={showErrs ? formik.errors.nFolios ?? " " : " "}
+                  />
+                  <Info
+                    level={2}
+                    infoText="Enter the number of folios for your collection. Simplest usage: enter between 1 and 12 and don't change the other fields - then pre-made sample art will be used."
+                  />
+                </Stack>
+                <Stack direction="row" sx={{ maxWidth: "100%" }}>
+                  <TextField
+                    id="baseURI"
+                    name="baseURI"
+                    label="Base URI"
+                    placeholder="Leave blank to use pre-made art"
+                    sx={{ width: "44ch", maxWidth: "100%" }}
+                    value={formik.values.baseURI}
+                    onChange={formik.handleChange}
+                    error={showErrs && Boolean(formik.errors.baseURI)}
+                    helperText={showErrs ? formik.errors.baseURI ?? " " : " "}
+                  />
+                  <Info
+                    level={2}
+                    infoText="Enter the common prefix for all metadata URIs in your collection. Simplest usage: just leave as is if you want to use pre-made sample art."
+                  />
+                </Stack>
+                <Stack direction="row" sx={{ maxWidth: "100%" }}>
+                  <TextField
+                    id="suffixURI"
+                    name="suffixURI"
+                    label="Suffix for URIs"
+                    placeholder=".json"
+                    sx={{ width: "12ch", maxWidth: "100%" }}
+                    value={formik.values.suffixURI}
+                    onChange={formik.handleChange}
+                    error={showErrs && Boolean(formik.errors.suffixURI)}
+                    helperText={showErrs ? formik.errors.suffixURI ?? " " : " "}
+                  />
+                  <Info
+                    level={2}
+                    infoText="Enter the common suffix for all metadata URIs in your collection. Simplest usage: just leave as is if you want to use pre-made sample art."
+                  />
+                </Stack>
               </Stack>
 
               {/* <Stack direction="row" justifyContent="left">
@@ -110,12 +129,21 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
                   Create new NFT contract
                 </Button>
               </Stack> */}
-              <Stack direction="row" justifyContent="left">
+              <Stack direction="row" justifyContent="left" >
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Create new collection
                 </Button>
+                <Info
+                  infoText="Click to create a new NFT contract. Afterwards, its address will automatically appear in the WC creation panel to be used in a fresh WC scenario."
+                  level={1}
+                />
               </Stack>
-              {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="makeNewERC721"/>}
+              {cfg.isDevUImode && (
+                <LogHistoryForElement
+                  logEntries={logs}
+                  elementType="makeNewERC721"
+                />
+              )}
             </Stack>
           </form>
         )}

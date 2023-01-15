@@ -3,11 +3,12 @@ export const showERC721CreationPanel = true
 export const showWCCreationPanel = true
 export const showMsgsInBrowserAlerts = false
 export const isDevUImode = true
+export const infoToolTipLevel = 2
 
 //LESS IMPORTANT SETTINGS
 export const DUR_SNACKBAR_TX = 180000 //in ms here, in my ts app it was in seconds for some reason
 export const DUR_SNACKBAR = 15000
-export const DUR_SNACKBAR_SUCCESS = 4000 
+export const DUR_SNACKBAR_SUCCESS = 4000
 
 //BE CAREFUL EDITING ANY ITEMS BELOW
 export const ipfsWebPrefix = "https://ipfs.io/ipfs/"
@@ -89,7 +90,9 @@ export const PLACEHOLDER_OWNER = "" //"Fetching owner..."
 //export const initOwners = tokenIds.map(() => PLACEHOLDER_OWNER)
 
 export const placeholderMetadata = {
-  name: "What's my name?", 
-  description: "Could not fetch metadata for this item. If it's located on IPFS, this is unfortunately a common issue: often a specific file can't be fetched even after many retries",
-  image: "https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+  name: "What's my name?",
+  description:
+    "Could not fetch metadata for this item. If it's located on IPFS, this is unfortunately a common issue: often a specific file can't be fetched even after many retries",
+  image:
+    "https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
 }

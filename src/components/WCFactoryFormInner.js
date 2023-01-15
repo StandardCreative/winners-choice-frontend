@@ -5,10 +5,11 @@ import TextField from "@mui/material/TextField"
 import { useFormikContext } from "formik"
 import { useEffect, useState } from "react"
 
-import LogHistoryForElement from "./LogHistoryForElement"
 import * as cfg from "../constants"
+import Info from "./Info"
+import LogHistoryForElement from "./LogHistoryForElement"
 
-const WCFactoryFormInner = ({ account, nftAddr, logs}) => {
+const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
   // returns all values and methods from your Formik tag
   const formik = useFormikContext()
   const [showErrs, setShowErrs] = useState(false)
@@ -49,11 +50,11 @@ const WCFactoryFormInner = ({ account, nftAddr, logs}) => {
           color="text.secondary"
           marginBottom="16px"
         >
-          Usage example: &nbsp;&nbsp;Fill in whitelist (0x123, 0x456)
-          &nbsp;&nbsp;•&nbsp;&nbsp; Put 1 for interval &nbsp;&nbsp;•&nbsp;&nbsp;
-          Leave NFT address blank
+          Here you can create a fresh WC scenario. Simplest usage: 1. Create a
+          new collection in the panel above; 2. In this panel, leave all
+          settings as is.
         </Typography>
-        <Stack direction="row" flexWrap="wrap" sx={{ gridColumnGap: "8px" }}>
+        <Stack direction="row" sx={{ maxWidth: "100%" }}>
           <TextField
             id="whitelist"
             name="whitelist"
@@ -73,34 +74,51 @@ const WCFactoryFormInner = ({ account, nftAddr, logs}) => {
             error={showErrs && Boolean(formik.errors.whitelist)}
             helperText={showErrs ? formik.errors.whitelist ?? " " : " "}
           />
+          <Info
+            level={2}
+            infoText="Enter comma-separated addresses. Simplest usage: leave as is - then the whitelist will be your address, repeated twice."
+          />
         </Stack>
-        <Stack direction="row" flexWrap="wrap" sx={{ gridColumnGap: "8px" }}>
-          <TextField
-            id="nftAddr"
-            name="nftAddr"
-            label={
-              nftAddr
-                ? "NFT contract address"
-                : "NFT address (create above to auto-fill)"
-            }
-            placeholder="Leave blank to auto-generate new NFT contract"
-            sx={{ width: "46ch", maxWidth: "100%" }}
-            value={formik.values.nftAddr}
-            onChange={formik.handleChange}
-            error={showErrs && Boolean(formik.errors.nftAddr)}
-            helperText={showErrs ? formik.errors.nftAddr ?? " " : " "}
-          />
-          <TextField
-            id="unlockInterval"
-            name="unlockInterval"
-            label="Unlock interval (minutes)"
-            placeholder="For 1 hour, enter 60"
-            sx={{ width: "30ch", maxWidth: "100%" }}
-            value={formik.values.unlockInterval}
-            onChange={formik.handleChange}
-            error={showErrs && Boolean(formik.errors.unlockInterval)}
-            helperText={showErrs ? formik.errors.unlockInterval ?? " " : " "}
-          />
+
+        <Stack direction="row" flexWrap="wrap" sx={{ gridColumnGap: "16px" }}>
+          <Stack direction="row" sx={{ maxWidth: "100%" }}>
+            <TextField
+              id="nftAddr"
+              name="nftAddr"
+              label={
+                nftAddr
+                  ? "NFT contract address"
+                  : "NFT address (create above to auto-fill)"
+              }
+              placeholder="Leave blank to auto-generate new NFT contract"
+              sx={{ width: "46ch", maxWidth: "100%" }}
+              value={formik.values.nftAddr}
+              onChange={formik.handleChange}
+              error={showErrs && Boolean(formik.errors.nftAddr)}
+              helperText={showErrs ? formik.errors.nftAddr ?? " " : " "}
+            />
+            <Info
+              level={2}
+              infoText="Enter the NFT contract address. Simplest usage: 1. Create a new collection in the panel above; 2. Then its address will automatically appear here."
+            />
+          </Stack>
+          <Stack direction="row" sx={{ maxWidth: "100%" }}>
+            <TextField
+              id="unlockInterval"
+              name="unlockInterval"
+              label="Unlock interval (minutes)"
+              placeholder="For 1 hour, enter 60"
+              sx={{ width: "30ch", maxWidth: "100%" }}
+              value={formik.values.unlockInterval}
+              onChange={formik.handleChange}
+              error={showErrs && Boolean(formik.errors.unlockInterval)}
+              helperText={showErrs ? formik.errors.unlockInterval ?? " " : " "}
+            />
+            <Info
+              level={2}
+              infoText="Enter your desired unlock interval (in minutes)."
+            />
+          </Stack>
         </Stack>
 
         {/* <Stack direction="row" justifyContent="left">
@@ -112,8 +130,14 @@ const WCFactoryFormInner = ({ account, nftAddr, logs}) => {
           <Button variant="contained" type="submit" disabled={isDisabled}>
             Create new WC scenario
           </Button>
+          <Info
+            level={2}
+            infoText="Click to create a new WC scenario. Then go to the Mint page to view and mint NFTs."
+          />
         </Stack>
-        {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="makeNewWCC"/>}
+        {cfg.isDevUImode && (
+          <LogHistoryForElement logEntries={logs} elementType="makeNewWCC" />
+        )}
       </Stack>
     </form>
   )

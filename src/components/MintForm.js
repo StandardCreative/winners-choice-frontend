@@ -5,8 +5,9 @@ import TextField from "@mui/material/TextField"
 import { Formik } from "formik"
 import { useState } from "react"
 
-import { getTimestampInSeconds, validateAddr } from "../utils/utils"
 import * as cfg from "../constants"
+import { getTimestampInSeconds, validateAddr } from "../utils/utils"
+import Info from "./Info"
 
 import LogHistoryForElement from "./LogHistoryForElement"
 
@@ -30,21 +31,20 @@ const validate = (values) => {
 
 export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
   const [showErrs, setShowErrs] = useState(false)
-  const isDisabled = !Boolean(account)
   const curT = getTimestampInSeconds()
-  
+
   let unlockCountdownStr = ""
-  if (unlockTime === cfg.PLACEHOLDER_UNLOCK_TIME) {}//no unlock time fetched
+  if (unlockTime === cfg.PLACEHOLDER_UNLOCK_TIME) {
+  } //no unlock time fetched
   else if (unlockTime.gte("1000000000000"))
-  unlockCountdownStr = "No NFT allowance"
+    unlockCountdownStr = "No NFT allowance"
   else {
     const secTillUnlock = unlockTime.toNumber() - curT
-    if (secTillUnlock < -15)
-    unlockCountdownStr = "Unlocked"
-    else if (secTillUnlock <= 0)
-    unlockCountdownStr = "Unlocking"
-    else unlockCountdownStr=`Wait ${secTillUnlock} sec`
+    if (secTillUnlock < -15) unlockCountdownStr = "Unlocked to mint"
+    else if (secTillUnlock <= 0) unlockCountdownStr = "Unlocking"
+    else unlockCountdownStr = `Wait ${secTillUnlock} sec`
   }
+  const isDisabled = !(Boolean(account) && unlockCountdownStr.startsWith("Unlock"))
 
   return (
     <>
@@ -82,11 +82,7 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
                 Example: 1. Enter just your address; 2. Wait for tx to succeed;
                 3. Enter "1" to mint NFKeeTees #1
               </Typography> */}
-              <Stack
-                direction="row"
-                flexWrap="wrap"
-                sx={{ gridColumnGap: "8px" }}
-              >
+              <Stack direction="row" sx={{ maxWidth: "100%" }}>
                 <TextField
                   id="tokenIdStr"
                   name="tokenIdStr"
@@ -97,16 +93,28 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
                   error={showErrs && Boolean(formik.errors.tokenIdStr)}
                   helperText={showErrs ? formik.errors.tokenIdStr ?? " " : " "}
                 />
+                <Info
+                  level={2}
+                  infoText='Enter the NFT number you want to mint. Select from the "not yet minted" ones below.'
+                />
               </Stack>
 
-              <Stack direction="row" justifyContent="left" alignItems="center" gap="16px">
+              <Stack
+                direction="row"
+                justifyContent="left"
+                alignItems="center"
+                gap="16px"
+              >
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Mint
                 </Button>
+                
                 <Typography>{`${unlockCountdownStr}`} </Typography>
                 {/* <Typography>{`Unlock time: ${unlockTime} Cur time ${cur} ${unlockCountdownStr}`} </Typography> */}
               </Stack>
-              {cfg.isDevUImode && <LogHistoryForElement logEntries={logs} elementType="mint"/>}
+              {cfg.isDevUImode && (
+                <LogHistoryForElement logEntries={logs} elementType="mint" />
+              )}
             </Stack>
           </form>
         )}
