@@ -32,7 +32,7 @@ const validate = (values) => {
   return errors
 }
 
-export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode}) => {
+export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
   const [showErrs, setShowErrs] = useState(false)
   const isDisabled = !Boolean(account)
   return (
@@ -55,13 +55,13 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode}) => {
             style={{ margin: "32px" }}
           >
             <Stack gap="0px">
-            <PanelTitle text="ERC721 Creation Panel"/>
+              <PanelTitle text="ERC721 Creation Panel" />
               <Typography
                 textAlign="center"
                 // color="text.secondary"
                 marginBottom="16px"
               >
-                Here you can create a fresh NFT contract that will work with WC.
+                Here you can create a new NFT contract that will work with WC.
                 Simplest usage: just click the button to use pre-filled
                 settings.
               </Typography>
@@ -134,7 +134,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode}) => {
                 </Button>
                 <InstructionsBox
                   level={uiMode.showInstructions}
-                  infoText="Click to create a new NFT contract. Afterwards, its address will automatically appear in the WC creation panel to be used in a fresh WC scenario."
+                  infoText="Click to create a new NFT contract. Afterwards, its address will automatically appear in the WC creation panel to be used in a new WC scenario."
                 />
               </Stack>
               {cfg.isDevUImode && (

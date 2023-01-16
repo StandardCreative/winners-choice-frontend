@@ -29,7 +29,7 @@ const LogEntry = ({ entry, entryNum }) => {
       description = `New WCC at ${entry.deployedAddr}`
       params.push(["ERC721", entry.vals.nftAddr])
       params.push(["Unlock interval (sec)", entry.vals.unlockInterval])
-      params.push(["Whitelist", entry.vals.users])
+      params.push(["Winners list", entry.vals.users])
       break
     case "makeNewERC721":
       description = `New NFT at ${entry.deployedAddr}`

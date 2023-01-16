@@ -277,7 +277,7 @@ export const sendTx = async (funcName, vals, dataBundle, enqueueSnackbar) => {
         wcf = getWCFContractInstance()
         vals.unlockInterval = Math.round(+vals.unlockInterval * 60)
         console.log(
-          "will try to deploy new WCC with:\nwhitelist",
+          "will try to deploy new WCC with:\nwinners list",
           vals.users,
           "\nnft address:\n",
           vals.nftAddr,

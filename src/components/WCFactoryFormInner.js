@@ -6,7 +6,6 @@ import { useFormikContext } from "formik"
 import { useEffect, useState } from "react"
 
 import * as cfg from "../constants"
-import Info from "./Info"
 import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
 import PanelTitle from "./PanelTitle"
@@ -28,10 +27,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
   useEffect(() => {
     //const cur = formik.values.whitelist
     const whitelist = account ? account + ", " + account : "" //same in initvalues (in parent comp)
-    if (true) {
-      console.log("setfieldval whitelist", whitelist)
-      formik.setFieldValue("whitelist", whitelist, false)
-    }
+    formik.setFieldValue("whitelist", whitelist, false)
   }, [account]) //adding formik to this dependency array, as React recommends, leads
   //to infinite renders (I guess setFieldValue causes the formik variable to change value)
 
@@ -44,15 +40,15 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
       style={{ margin: "32px" }}
     >
       <Stack gap="0px">
-      <PanelTitle text="WC Creation Panel" />
+        <PanelTitle text="WC Creation Panel" />
         <Typography
           textAlign="center"
           // color="text.secondary"
           marginBottom="16px"
         >
-          Here you can create a fresh WC scenario. Simplest usage: 1. Create a
-          new collection in the panel above; 2. In this panel, leave all
-          settings as is.
+          Here you can create a new WC scenario. Simplest usage: 1. Create a new
+          collection in the panel above; 2. In this panel, leave all settings as
+          is.
         </Typography>
         <Stack direction="row" sx={{ maxWidth: "100%" }}>
           <TextField
@@ -60,15 +56,15 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
             name="whitelist"
             label={
               account
-                ? "Whitelist (comma-separated addresses)"
-                : "Whitelist (connect to auto-fill)"
+                ? "Winners (comma-separated addresses)"
+                : "Winners (connect to auto-fill)"
             }
             sx={{ width: "100%", maxWidth: "100%" }}
             value={formik.values.whitelist}
             placeholder={
               account
                 ? "Comma-separated addresses"
-                : "Connect wallet to auto-fill sample whitelist"
+                : "Connect wallet to auto-fill sample list"
             }
             onChange={formik.handleChange}
             error={showErrs && Boolean(formik.errors.whitelist)}
@@ -76,7 +72,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
           />
           <InstructionsBox
             level={uiMode.showInstructions}
-            infoText="Enter comma-separated addresses. Simplest usage: leave as is - then the whitelist will be your address, repeated twice."
+            infoText="Enter comma-separated addresses. Simplest usage: leave as is - then the winners list will be your address repeated twice."
           />
         </Stack>
 
@@ -97,8 +93,8 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
               error={showErrs && Boolean(formik.errors.nftAddr)}
               helperText={showErrs ? formik.errors.nftAddr ?? " " : " "}
             />
-          <InstructionsBox
-            level={uiMode.showInstructions}
+            <InstructionsBox
+              level={uiMode.showInstructions}
               infoText="Enter the NFT contract address. Simplest usage: 1. Create a new collection in the panel above; 2. Then its address will automatically appear here."
             />
           </Stack>
@@ -114,8 +110,8 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
               error={showErrs && Boolean(formik.errors.unlockInterval)}
               helperText={showErrs ? formik.errors.unlockInterval ?? " " : " "}
             />
-          <InstructionsBox
-            level={uiMode.showInstructions}
+            <InstructionsBox
+              level={uiMode.showInstructions}
               infoText="Enter your desired unlock interval (in minutes)."
             />
           </Stack>

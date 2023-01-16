@@ -28,8 +28,30 @@ export function ShowInstructionsCheckBox({ uiMode, setUiMode }) {
       <Stack sx={{ margin: "8px 32px 0 32px" }} alignItems="center">
         <InstructionsBox
           level={uiMode.showInstructions}
-          infoText="Suggested usage: 1. In Admin, use top panel to create a collection; 2. Use bottom panel to create a new WC scenario; 3. In Mint, view and mint NFTs; 4. Repeat."
+          infoText="Suggested usage:"
         />
+        <Stack>
+        <InstructionsBox
+          level={uiMode.showInstructions}
+          disableIcon
+          infoText="1. In Admin, use top panel to create a collection"
+          />
+          <InstructionsBox
+          level={uiMode.showInstructions}
+          disableIcon
+          infoText="2. Use bottom panel to create a new WC scenario"
+          />
+           <InstructionsBox
+          level={uiMode.showInstructions}
+          disableIcon
+          infoText="3. In Mint, view and mint NFTs"
+          />
+           <InstructionsBox
+          level={uiMode.showInstructions}
+          disableIcon
+          infoText="4. Rinse and repeat"
+          />
+        </Stack>
       </Stack>
     </>
   )

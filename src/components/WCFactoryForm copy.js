@@ -78,7 +78,7 @@ export const WCFactoryForm = ({ onSubmit, account, nftAddr }) => {
                 <TextField
                   id="whitelist"
                   name="whitelist"
-                  label="Whitelist (comma-separated addresses)"
+                  label="Winners (comma-separated addresses)"
                   sx={{ width: "100%", maxWidth: "100%" }}
                   value={formik.values.whitelist}
                   placeholder={

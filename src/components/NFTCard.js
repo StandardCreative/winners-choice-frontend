@@ -95,14 +95,6 @@ export default function NFTCard({ tokenId, owner, jsonData }) {
             Easy, find the NFT you want, put its number in the box above,
             and click Mint.
           </Typography>
-          <Typography paragraph>
-            Note: you have to be on the super-exclusive whitelist to be able to
-            mint, and even then you can mint only one.
-          </Typography>
-          <Typography paragraph>
-            The further down the list you are, the longer you will need to wait
-            to be able to mint. Yes, we know, life isn't always fair!
-          </Typography>
         </CardContent>
       </Collapse>
     </Card>

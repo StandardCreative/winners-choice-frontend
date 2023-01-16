@@ -91,7 +91,7 @@ function App() {
 
     if (vals.nftAddr) {
       // alert(
-      //   "Currently the option of entering your own NFT address is disabled, because the specs for what exact interface WCC should expect from the NFT contract are not yet settled on.\n\nInstead, for now please leave the NFT address blank. Then an NFT contract with a compatible interface will automatically be deployed and used in a fresh WC scenario."
+      //   "Currently the option of entering your own NFT address is disabled, because the specs for what exact interface WCC should expect from the NFT contract are not yet settled on.\n\nInstead, for now please leave the NFT address blank. Then an NFT contract with a compatible interface will automatically be deployed and used in a new WC scenario."
       // )
       // return
       enqueueSnackbar(
@@ -150,20 +150,12 @@ function App() {
         setUnlockTime={setUnlockTime}
       />
       <div style={{ margin: "12px 32px 0px 32px" }}>
-        <Typography
-          variant="h3"
-          color="text.primary"
-          textAlign="center"
-          fontWeight="bold"
-        >
-          Winner's Choice
-        </Typography>{" "}
-        <Typography textAlign="center" fontWeight="normal" variant="h6">
-          In Winner's Choice (WC), whitelisted users are unlocked one by one in
+        <Typography textAlign="center" fontWeight="bold">
+          In Winner's Choice (WC), whitelisted addresses (aka winners) are unlocked one by one in
           the order of priority to mint an NFT of their choice.
         </Typography>
-        <Typography textAlign="center" fontWeight="normal" variant="h6">
-          The first user is unlocked immediately, the second one after a delay
+        <Typography textAlign="center" fontWeight="bold">
+          The first address is unlocked immediately, the second one after a delay
           D, the third one after 2D, etc.
         </Typography>
       </div>
