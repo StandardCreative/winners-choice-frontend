@@ -7,7 +7,7 @@ import { useState } from "react"
 
 import * as cfg from "../constants"
 import { getTimestampInSeconds, validateAddr } from "../utils/utils"
-import Info from "./Info"
+import InstructionsBox from "./InstructionsBox"
 
 import LogHistoryForElement from "./LogHistoryForElement"
 
@@ -29,7 +29,7 @@ const validate = (values) => {
   return errors
 }
 
-export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
+export const MintForm = ({ onSubmit, account, logs, unlockTime, uiMode }) => {
   const [showErrs, setShowErrs] = useState(false)
   const curT = getTimestampInSeconds()
 
@@ -44,7 +44,9 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
     else if (secTillUnlock <= 0) unlockCountdownStr = "Unlocking"
     else unlockCountdownStr = `Wait ${secTillUnlock} sec`
   }
-  const isDisabled = !(Boolean(account) && unlockCountdownStr.startsWith("Unlock"))
+  const isDisabled = !(
+    Boolean(account) && unlockCountdownStr.startsWith("Unlock")
+  )
 
   return (
     <>
@@ -93,8 +95,8 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
                   error={showErrs && Boolean(formik.errors.tokenIdStr)}
                   helperText={showErrs ? formik.errors.tokenIdStr ?? " " : " "}
                 />
-                <Info
-                  level={2}
+                <InstructionsBox
+                  level={uiMode.showInstructions}
                   infoText='Enter the NFT number you want to mint. Select from the "not yet minted" ones below.'
                 />
               </Stack>
@@ -108,7 +110,7 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime }) => {
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Mint
                 </Button>
-                
+
                 <Typography>{`${unlockCountdownStr}`} </Typography>
                 {/* <Typography>{`Unlock time: ${unlockTime} Cur time ${cur} ${unlockCountdownStr}`} </Typography> */}
               </Stack>

@@ -34,7 +34,7 @@ function Header({
     useState(false)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const makeMenuHandler = (option) => () => {
-    setUiMode(option)
+    setUiMode(uiMode => ({...uiMode, page: option}))
     handleCloseNavMenu()
   }
 

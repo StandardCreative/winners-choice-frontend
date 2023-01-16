@@ -16,7 +16,7 @@ const validate = (values) => {
   return errors
 }
 
-export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs }) => {
+export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs, uiMode }) => {
   const WCFactoryFormInitVals = {
     whitelist:  account ? (account + ", " + account) : "", //same in useEffect in inner comp
     nftAddr: nftAddr,
@@ -35,7 +35,7 @@ export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs }) => {
         }}
       >
         {/* https://stackoverflow.com/questions/66235334/formik-setfieldvalue-inside-a-function */}
-        <WCFactoryFormInner account={account} nftAddr={nftAddr} logs={logs}/>
+        <WCFactoryFormInner account={account} nftAddr={nftAddr} logs={logs} uiMode={uiMode}/>
       </Formik>
     </>
   )

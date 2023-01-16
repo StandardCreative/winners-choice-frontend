@@ -7,7 +7,7 @@ import { useState } from "react"
 
 import * as cfg from "../constants"
 import { validateAddr } from "../utils/utils"
-import Info from "./Info"
+import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
 
 const ERC721CreationFormInitVals = {
@@ -31,7 +31,7 @@ const validate = (values) => {
   return errors
 }
 
-export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
+export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode}) => {
   const [showErrs, setShowErrs] = useState(false)
   const isDisabled = !Boolean(account)
   return (
@@ -59,7 +59,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
               </Typography>
               <Typography
                 textAlign="center"
-                color="text.secondary"
+                // color="text.secondary"
                 marginBottom="16px"
               >
                 Here you can create a fresh NFT contract that will work with WC.
@@ -83,8 +83,8 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
                     error={showErrs && Boolean(formik.errors.nFolios)}
                     helperText={showErrs ? formik.errors.nFolios ?? " " : " "}
                   />
-                  <Info
-                    level={2}
+                  <InstructionsBox
+                    level={uiMode.showInstructions}
                     infoText="Enter the number of folios for your collection. Simplest usage: enter between 1 and 12 and don't change the other fields - then pre-made sample art will be used."
                   />
                 </Stack>
@@ -100,8 +100,8 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
                     error={showErrs && Boolean(formik.errors.baseURI)}
                     helperText={showErrs ? formik.errors.baseURI ?? " " : " "}
                   />
-                  <Info
-                    level={2}
+                  <InstructionsBox
+                    level={uiMode.showInstructions}
                     infoText="Enter the common prefix for all metadata URIs in your collection. Simplest usage: just leave as is if you want to use pre-made sample art."
                   />
                 </Stack>
@@ -117,8 +117,8 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
                     error={showErrs && Boolean(formik.errors.suffixURI)}
                     helperText={showErrs ? formik.errors.suffixURI ?? " " : " "}
                   />
-                  <Info
-                    level={2}
+                  <InstructionsBox
+                    level={uiMode.showInstructions}
                     infoText="Enter the common suffix for all metadata URIs in your collection. Simplest usage: just leave as is if you want to use pre-made sample art."
                   />
                 </Stack>
@@ -129,13 +129,13 @@ export const ERC721CreationForm = ({ onSubmit, account, logs }) => {
                   Create new NFT contract
                 </Button>
               </Stack> */}
-              <Stack direction="row" justifyContent="left" >
+              <Stack direction="row" justifyContent="left">
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Create new collection
                 </Button>
-                <Info
+                <InstructionsBox
+                  level={uiMode.showInstructions}
                   infoText="Click to create a new NFT contract. Afterwards, its address will automatically appear in the WC creation panel to be used in a fresh WC scenario."
-                  level={1}
                 />
               </Stack>
               {cfg.isDevUImode && (

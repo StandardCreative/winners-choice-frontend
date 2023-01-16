@@ -7,9 +7,10 @@ import { useEffect, useState } from "react"
 
 import * as cfg from "../constants"
 import Info from "./Info"
+import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
 
-const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
+const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
   // returns all values and methods from your Formik tag
   const formik = useFormikContext()
   const [showErrs, setShowErrs] = useState(false)
@@ -47,7 +48,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
         </Typography>
         <Typography
           textAlign="center"
-          color="text.secondary"
+          // color="text.secondary"
           marginBottom="16px"
         >
           Here you can create a fresh WC scenario. Simplest usage: 1. Create a
@@ -74,8 +75,8 @@ const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
             error={showErrs && Boolean(formik.errors.whitelist)}
             helperText={showErrs ? formik.errors.whitelist ?? " " : " "}
           />
-          <Info
-            level={2}
+          <InstructionsBox
+            level={uiMode.showInstructions}
             infoText="Enter comma-separated addresses. Simplest usage: leave as is - then the whitelist will be your address, repeated twice."
           />
         </Stack>
@@ -97,8 +98,8 @@ const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
               error={showErrs && Boolean(formik.errors.nftAddr)}
               helperText={showErrs ? formik.errors.nftAddr ?? " " : " "}
             />
-            <Info
-              level={2}
+          <InstructionsBox
+            level={uiMode.showInstructions}
               infoText="Enter the NFT contract address. Simplest usage: 1. Create a new collection in the panel above; 2. Then its address will automatically appear here."
             />
           </Stack>
@@ -114,8 +115,8 @@ const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
               error={showErrs && Boolean(formik.errors.unlockInterval)}
               helperText={showErrs ? formik.errors.unlockInterval ?? " " : " "}
             />
-            <Info
-              level={2}
+          <InstructionsBox
+            level={uiMode.showInstructions}
               infoText="Enter your desired unlock interval (in minutes)."
             />
           </Stack>
@@ -130,8 +131,8 @@ const WCFactoryFormInner = ({ account, nftAddr, logs }) => {
           <Button variant="contained" type="submit" disabled={isDisabled}>
             Create new WC scenario
           </Button>
-          <Info
-            level={2}
+          <InstructionsBox
+            level={uiMode.showInstructions}
             infoText="Click to create a new WC scenario. Then go to the Mint page to view and mint NFTs."
           />
         </Stack>

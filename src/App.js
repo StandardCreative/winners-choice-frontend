@@ -11,7 +11,11 @@ import LogHistory from "./components/LogHistory"
 import { MintForm } from "./components/MintForm"
 import NFTGallery from "./components/NFTGallery"
 import { WCFactoryForm } from "./components/WCFactoryForm"
-import { PLACEHOLDER_UNLOCK_TIME } from "./constants"
+import {
+  PLACEHOLDER_UNLOCK_TIME,
+  showShowInstructionsCheckbox,
+} from "./constants"
+import { ShowInstructionsCheckBox } from "./components/ShowInstructionsCheckBox"
 const mockLogEntry = {
   txHash: "0x97395b8e77c3c367f459bc4cbdc5b45ce752f9bdea4a08a62e5efb4de628d97c",
   deployedAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
@@ -34,7 +38,10 @@ function App() {
   const [unlockTime, setUnlockTime] = useState(PLACEHOLDER_UNLOCK_TIME)
   const [nftOwners, setNftOwners] = useState([])
   const [metadatas, setMetadatas] = useState([])
-  const [uiMode, setUiMode] = useState("Admin") //"admin", "mint", "logs"
+  const [uiMode, setUiMode] = useState({
+    page: "Admin",
+    showInstructions: true,
+  }) //"admin", "mint", "logs"
   const [newlyDeployedERC721Addr, setNewlyDeployedERC721Addr] = useState("")
   const [logs, setLogs] = useState([]) // can initialize with mockLogEntry for testing
   const wccAddressRef = useRef("")
@@ -141,40 +148,46 @@ function App() {
         setNFolios={setNFolios}
         setUnlockTime={setUnlockTime}
       />
-      {uiMode === "Admin" && (
+      {showShowInstructionsCheckbox && (
+        <ShowInstructionsCheckBox uiMode={uiMode} setUiMode={setUiMode} />
+      )}
+      {uiMode.page === "Admin" && (
         <ERC721CreationForm
           onSubmit={erc721CreationCb}
           account={accounts[0]}
           setNftOwners={setNftOwners}
           logs={logs}
+          uiMode={uiMode}
         />
       )}
-      {uiMode === "Admin" && (
+      {uiMode.page === "Admin" && (
         <WCFactoryForm
           onSubmit={wcFactoryCb}
           account={accounts[0]}
           // setNftOwners={setNftOwners}
           nftAddr={dataBundle.nftAddr}
           logs={logs}
+          uiMode={uiMode}
         />
       )}
-      {uiMode === "Mint" && (
+      {uiMode.page === "Mint" && (
         <MintForm
           onSubmit={mintCb}
           account={accounts[0]}
           unlockTime={unlockTime}
           // setNftOwners={setNftOwners}
           logs={logs}
+          uiMode={uiMode}
         />
       )}
-      {uiMode === "Mint" && (
+      {uiMode.page === "Mint" && (
         <NFTGallery
           nftOwners={nftOwners}
           metadatas={metadatas}
           nFolios={nFolios}
         />
       )}
-      {uiMode === "History" && <LogHistory logEntries={logs} />}
+      {uiMode.page === "History" && <LogHistory logEntries={logs} />}
     </div>
   )
 }

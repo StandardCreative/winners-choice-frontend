@@ -2,8 +2,9 @@
 export const showERC721CreationPanel = true
 export const showWCCreationPanel = true
 export const showMsgsInBrowserAlerts = false
-export const isDevUImode = true
-export const infoToolTipLevel = 2
+export const isDevUImode = true //show tx history locally
+export const showShowInstructionsCheckbox = true
+export const infoToolTipLevel = 0 
 
 //LESS IMPORTANT SETTINGS
 export const DUR_SNACKBAR_TX = 180000 //in ms here, in my ts app it was in seconds for some reason
