@@ -28,7 +28,7 @@ export function ShowInstructionsCheckBox({ uiMode, setUiMode }) {
       <Box sx={{ margin: "8px 32px 0 32px" }}>
         <InstructionsBox
           level={uiMode.showInstructions}
-          infoText="Suggested usage: 1. In Admin, use top panel to create a collection; 2. In bottom panel, create a new WC scenario; 3. In Mint, view and mint NFTs; 4. Repeat."
+          infoText="Suggested usage: 1. In Admin, use top panel to create a collection; 2. Use bottom panel to create a new WC scenario; 3. In Mint, view and mint NFTs; 4. Repeat."
         />
       </Box>
     </>
