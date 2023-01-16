@@ -5,17 +5,18 @@ import "./App.css"
 
 import * as ops from "./operations/operations"
 
+import { Typography } from "@mui/material"
 import { ERC721CreationForm } from "./components/ERC721CreationForm"
 import Header from "./components/Header"
 import LogHistory from "./components/LogHistory"
 import { MintForm } from "./components/MintForm"
 import NFTGallery from "./components/NFTGallery"
+import { ShowInstructionsCheckBox } from "./components/ShowInstructionsCheckBox"
 import { WCFactoryForm } from "./components/WCFactoryForm"
 import {
   PLACEHOLDER_UNLOCK_TIME,
   showShowInstructionsCheckbox,
 } from "./constants"
-import { ShowInstructionsCheckBox } from "./components/ShowInstructionsCheckBox"
 const mockLogEntry = {
   txHash: "0x97395b8e77c3c367f459bc4cbdc5b45ce752f9bdea4a08a62e5efb4de628d97c",
   deployedAddr: "0xb71b27b14ca7cee82ca214c1332765a727497762",
@@ -148,6 +149,24 @@ function App() {
         setNFolios={setNFolios}
         setUnlockTime={setUnlockTime}
       />
+      <div style={{ margin: "12px 32px 0px 32px" }}>
+        <Typography
+          variant="h3"
+          color="text.primary"
+          textAlign="center"
+          fontWeight="bold"
+        >
+          Winner's Choice
+        </Typography>{" "}
+        <Typography textAlign="center" fontWeight="normal" variant="h6">
+          In Winner's Choice (WC), whitelisted users are unlocked one by one in
+          the order of priority to mint an NFT of their choice.
+        </Typography>
+        <Typography textAlign="center" fontWeight="normal" variant="h6">
+          The first user is unlocked immediately, the second one after a delay
+          D, the third one after 2D, etc.
+        </Typography>
+      </div>
       {showShowInstructionsCheckbox && (
         <ShowInstructionsCheckBox uiMode={uiMode} setUiMode={setUiMode} />
       )}

@@ -9,6 +9,7 @@ import * as cfg from "../constants"
 import Info from "./Info"
 import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
+import PanelTitle from "./PanelTitle"
 
 const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
   // returns all values and methods from your Formik tag
@@ -43,9 +44,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
       style={{ margin: "32px" }}
     >
       <Stack gap="0px">
-        <Typography variant="h5" color="primary" textAlign="center">
-          WC Creation Panel
-        </Typography>
+      <PanelTitle text="WC Creation Panel" />
         <Typography
           textAlign="center"
           // color="text.secondary"

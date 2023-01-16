@@ -9,6 +9,7 @@ import * as cfg from "../constants"
 import { validateAddr } from "../utils/utils"
 import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
+import PanelTitle from "./PanelTitle"
 
 const ERC721CreationFormInitVals = {
   baseURI:
@@ -54,9 +55,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode}) => {
             style={{ margin: "32px" }}
           >
             <Stack gap="0px">
-              <Typography variant="h5" color="primary" textAlign="center">
-                ERC721 Creation Panel
-              </Typography>
+            <PanelTitle text="ERC721 Creation Panel"/>
               <Typography
                 textAlign="center"
                 // color="text.secondary"

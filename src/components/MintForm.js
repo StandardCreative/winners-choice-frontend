@@ -10,6 +10,7 @@ import { getTimestampInSeconds, validateAddr } from "../utils/utils"
 import InstructionsBox from "./InstructionsBox"
 
 import LogHistoryForElement from "./LogHistoryForElement"
+import PanelTitle from "./PanelTitle"
 
 const MintFormInitVals = {
   tokenIdStr: "",
@@ -68,14 +69,7 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime, uiMode }) => {
             style={{ margin: "32px" }}
           >
             <Stack gap="0px">
-              <Typography
-                variant="h5"
-                color="primary"
-                textAlign="center"
-                gutterBottom
-              >
-                Minting Panel
-              </Typography>
+            <PanelTitle text="Minting Panel" />
               {/* <Typography textAlign="center" fontWeight="bold">
                 Resettable demo mode: to deploy new NFT and WCC enter a new
                 whitelist below (example: 0xabc, 0x123). Unlock interval is 1 min.
