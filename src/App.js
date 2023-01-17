@@ -151,12 +151,15 @@ function App() {
       />
       <div style={{ margin: "12px 32px 0px 32px" }}>
         <Typography textAlign="center" fontWeight="bold">
-          In Winner's Choice (WC), whitelisted addresses (aka winners) are unlocked one by one in
-          the order of priority to mint an NFT of their choice.
+          In Winner's Choice (WC), specific wallet addresses (called winners) are
+          unlocked, in priority order, to mint an NFT of their
+          choice. 
+          {/* In Winner's Choice (WC), whitelisted addresses (aka winners) are unlocked one by one in
+          the order of priority to mint an NFT of their choice. */}
         </Typography>
         <Typography textAlign="center" fontWeight="bold">
-          The first address is unlocked immediately, the second one after a delay
-          D, the third one after 2D, etc.
+          The first address on the 'winners list' is unlocked immediately, the second one after a
+          delay D, the third one after 2D, etc.
         </Typography>
       </div>
       {showShowInstructionsCheckbox && (
