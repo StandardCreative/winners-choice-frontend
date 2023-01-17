@@ -29,7 +29,7 @@ export function ShowInstructionsCheckBox({ uiMode, setUiMode }) {
         <InstructionsBox
           level={uiMode.showInstructions}
           noGutterBottom
-          infoText="Suggested workflow:\n1. In Admin, use top panel to create a collection\n2. Use bottom panel to deploy a new WC contract\n3. In Mint, view and mint NFTs\n4. Repeat from step 1\n-------------------------------------------------------------------------------------------------\nFor first-time use:\nWe pre-filled fields with sensible defaults, feel free to use them."
+          infoText="Suggested workflow:\n1. In Admin, use top panel to create a collection\n2. Use bottom panel to deploy a new WC contract\n3. In Mint, view and mint NFTs\n4. Repeat from step 1\n----------------------------------------------------------\nFor first-time use:\nWe pre-filled fields with sensible defaults, feel free to use them."
         />
         {/* <Stack>
         <InstructionsBox

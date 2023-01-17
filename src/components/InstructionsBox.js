@@ -3,9 +3,7 @@ import { Box, Stack, Typography } from "@mui/material"
 
 const parseText = (infoText) => {
   const typographyChunks = []
-  console.log(infoText);
   for (let inputChunk of infoText.split("\\n")) {
-    console.log("after split ", inputChunk);
     const chunk = {text: inputChunk}
     typographyChunks.push(chunk)
   }
