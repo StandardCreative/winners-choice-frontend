@@ -61,9 +61,8 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                 // color="text.secondary"
                 marginBottom="16px"
               >
-                Here you can create a new NFT contract that will work with WC.
-                Simplest usage: just click the button to use pre-filled
-                settings.
+                Here you can create and deploy a new NFT contract that will work
+                with WC.
               </Typography>
               <Stack
                 direction="row"
@@ -84,7 +83,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                   />
                   <InstructionsBox
                     level={uiMode.showInstructions}
-                    infoText="Enter the number of folios for your collection. Simplest usage: enter between 1 and 12 and don't change the other fields - then pre-made sample art will be used."
+                    infoText="Enter the number of folios for your collection. \nDefault:\nIf you want to use pre-made sample art, put any number 1-12."
                   />
                 </Stack>
                 <Stack direction="row" sx={{ maxWidth: "100%" }}>
@@ -101,7 +100,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                   />
                   <InstructionsBox
                     level={uiMode.showInstructions}
-                    infoText="Enter the common prefix for all metadata URIs in your collection. Simplest usage: just leave as is if you want to use pre-made sample art."
+                    infoText="Enter the common prefix for all metadata URIs in your collection. \nDefault:\nJust leave as is if you want to use pre-made sample art."
                   />
                 </Stack>
                 <Stack direction="row" sx={{ maxWidth: "100%" }}>
@@ -118,7 +117,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                   />
                   <InstructionsBox
                     level={uiMode.showInstructions}
-                    infoText="Enter the common suffix for all metadata URIs in your collection. Simplest usage: just leave as is if you want to use pre-made sample art."
+                    infoText="Enter the common suffix for all metadata URIs in your collection. \nDefault:\nJust leave as is if you want to use pre-made sample art."
                   />
                 </Stack>
               </Stack>
@@ -134,7 +133,7 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                 </Button>
                 <InstructionsBox
                   level={uiMode.showInstructions}
-                  infoText="Click to create a new NFT contract. Afterwards, its address will automatically appear in the WC creation panel to be used in a new WC scenario."
+                  infoText="Click to create a new NFT contract.\nAfterwards, its address will be pre-filled in the panel below."
                 />
               </Stack>
               {cfg.isDevUImode && (

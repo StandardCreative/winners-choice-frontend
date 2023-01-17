@@ -46,9 +46,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
           // color="text.secondary"
           marginBottom="16px"
         >
-          Here you can create a new WC scenario. Simplest usage: 1. Create a new
-          collection in the panel above; 2. In this panel, leave all settings as
-          is.
+          Here you can deploy a new WC contract.
         </Typography>
         <Stack direction="row" sx={{ maxWidth: "100%" }}>
           <TextField
@@ -72,7 +70,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
           />
           <InstructionsBox
             level={uiMode.showInstructions}
-            infoText="Enter comma-separated addresses. Simplest usage: leave as is - then the winners list will be your address repeated twice."
+            infoText="Enter comma-separated list of winner addresses. \nDefault:\nCan leave as is - we'll then use your own address twice."
           />
         </Stack>
 
@@ -95,7 +93,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
             />
             <InstructionsBox
               level={uiMode.showInstructions}
-              infoText="Enter the NFT contract address. Simplest usage: 1. Create a new collection in the panel above; 2. Then its address will automatically appear here."
+              infoText="Enter the NFT contract address. \nDefault:\n1. Create a new collection in the panel above\n2. You will see its address pre-filled for you here."
             />
           </Stack>
           <Stack direction="row" sx={{ maxWidth: "100%" }}>
@@ -128,7 +126,7 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
           </Button>
           <InstructionsBox
             level={uiMode.showInstructions}
-            infoText="Click to create a new WC scenario. Then go to the Mint page to view and mint NFTs."
+            infoText="Click to create a new WC scenario.\nThen go to the Mint page to view and mint NFTs."
           />
         </Stack>
         {cfg.isDevUImode && (

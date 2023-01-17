@@ -91,7 +91,7 @@ export const MintForm = ({ onSubmit, account, logs, unlockTime, uiMode }) => {
                 />
                 <InstructionsBox
                   level={uiMode.showInstructions}
-                  infoText='Enter the NFT number you want to mint. Select from the "not yet minted" ones below.'
+                  infoText='Enter the NFT number you want to mint.\nSelect from the "not yet minted" ones below.'
                 />
               </Stack>
 

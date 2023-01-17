@@ -28,9 +28,10 @@ export function ShowInstructionsCheckBox({ uiMode, setUiMode }) {
       <Stack sx={{ margin: "8px 32px 0 32px" }} alignItems="center">
         <InstructionsBox
           level={uiMode.showInstructions}
-          infoText="Suggested usage:"
+          noGutterBottom
+          infoText="Suggested workflow:\n1. In Admin, use top panel to create a collection\n2. Use bottom panel to deploy a new WC contract\n3. In Mint, view and mint NFTs\n4. Repeat from step 1\n-------------------------------------------------------------------------------------------------\nFor first-time use:\nWe pre-filled fields with sensible defaults, feel free to use them."
         />
-        <Stack>
+        {/* <Stack>
         <InstructionsBox
           level={uiMode.showInstructions}
           disableIcon
@@ -39,7 +40,7 @@ export function ShowInstructionsCheckBox({ uiMode, setUiMode }) {
           <InstructionsBox
           level={uiMode.showInstructions}
           disableIcon
-          infoText="2. Use bottom panel to create a new WC scenario"
+          infoText="2. Use bottom panel to deploy a new WC contract (with that collection)."
           />
            <InstructionsBox
           level={uiMode.showInstructions}
@@ -49,9 +50,14 @@ export function ShowInstructionsCheckBox({ uiMode, setUiMode }) {
            <InstructionsBox
           level={uiMode.showInstructions}
           disableIcon
-          infoText="4. Rinse and repeat"
+          infoText="4. Repeat from step 1."
           />
-        </Stack>
+           <InstructionsBox
+          level={uiMode.showInstructions}
+          disableIcon
+          infoText='For first-time use: fields in Admin are pre-filled with sensible defaults, feel free to leave them as is.'
+          />
+        </Stack> */}
       </Stack>
     </>
   )
