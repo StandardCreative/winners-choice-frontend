@@ -149,7 +149,7 @@ function App() {
         setNFolios={setNFolios}
         setUnlockTime={setUnlockTime}
       />
-      <div style={{ margin: "12px 32px 0px 32px" }}>
+      {uiMode.showInstructions  && <div style={{ margin: "12px 32px 0px 32px" }}>
         <Typography textAlign="center" fontWeight="bold">
           In Winner's Choice (WC), specific wallet addresses (called winners) are
           unlocked, in priority order, to mint an NFT of their
@@ -161,9 +161,9 @@ function App() {
           The first address on the 'winners list' is unlocked immediately, the second one after a
           delay D, the third one after 2D, etc.
         </Typography>
-      </div>
+      </div>}
       {showShowInstructionsCheckbox && (
-        <ShowInstructionsCheckBox uiMode={uiMode} setUiMode={setUiMode} />
+        <ShowInstructionsCheckBox uiMode={uiMode} setUiMode={setUiMode} account={accounts[0]} logs={logs}/>
       )}
       {uiMode.page === "Admin" && (
         <ERC721CreationForm

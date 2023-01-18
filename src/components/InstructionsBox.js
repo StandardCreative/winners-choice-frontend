@@ -14,7 +14,7 @@ export default function InstructionsBox({ infoText, level, disableIcon, noGutter
   const clr="secondary"
   const boxMarginSt = noGutterBottom ? "0 0 0 0" : "0 0 16px 0"
   return (
-    <div style={{maxWidth:"500px"}}>
+    <div style={{maxWidth:"550px"}}>
       
       <Stack direction="row" alignSelf="center" gap="8px">
       {/* <Stack direction="row" bgcolor="#F5F5FF" alignSelf="center"> */}
