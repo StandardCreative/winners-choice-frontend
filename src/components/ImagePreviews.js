@@ -1,6 +1,4 @@
 import { Typography } from "@mui/material"
-import ImageList from "@mui/material/ImageList"
-import ImageListItem from "@mui/material/ImageListItem"
 import * as React from "react"
 import { nfkeetees1to12NftStorageBaseURI } from "../constants"
 
@@ -31,18 +29,27 @@ export function ImagePreviews({ nFolios, isPremadeArtURI }) {
       <Typography variant="h6">NFT collection preview </Typography>
       {!!previewText && <Typography variant="body1">{previewText}</Typography>}
       {isPremadeArtURI && !!nImgs && (
-        <ImageList sx={{ width: "90%", height: 100 }} cols={12} rowHeight={100}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "4px",
+            paddingBottom: "16px",
+            // borderRadius: "4px"
+          }}
+        >
           {numbers.map((num) => (
-            <ImageListItem key={num}>
-              <img
-                src={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
-                srcSet={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
-                alt={`NFKeeTees #${num}`}
-                loading="lazy"
-              />
-            </ImageListItem>
+            <img
+              key={num}
+              src={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
+              srcSet={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
+              style={{objectFit:"cover", width:"64px", height:"64px"}}
+              alt={`NFKeeTees #${num}`}
+              loading="lazy"
+            />
           ))}
-        </ImageList>
+        </div>
       )}
     </>
   )
