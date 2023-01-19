@@ -42,7 +42,7 @@ export function ImagePreviews({ nFolios, isPremadeArtURI }) {
               key={num}
               src={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
               srcSet={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
-              style={{objectFit:"cover", width:"100px", height:"100px"}}
+              style={{objectFit:"cover", width:"80px", height:"80px"}}
               alt={`NFKeeTees #${num}`}
               loading="lazy"
             />
