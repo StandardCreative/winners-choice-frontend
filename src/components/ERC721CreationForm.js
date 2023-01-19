@@ -7,13 +7,15 @@ import { useState } from "react"
 
 import * as cfg from "../constants"
 import { validateAddr } from "../utils/utils"
+import { ImagePreviews } from "./ImagePreviews"
 import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
 import PanelTitle from "./PanelTitle"
 
+//bafybeigc3trxtkgi2wiyaxcekv6fwknfcov3zt2fxqguc2nc5jxpxin47u - NFKeeTees 1-12 json
 const ERC721CreationFormInitVals = {
   baseURI:
-    "ipfs://bafybeig5uvacrxeg4cijeog55jmabopuwlvs3ryuj34brrvjzx6xpiu45u/",
+    "ipfs://bafybeigc3trxtkgi2wiyaxcekv6fwknfcov3zt2fxqguc2nc5jxpxin47u/",
   suffixURI: ".json",
   nFolios: "3",
 }
@@ -127,6 +129,16 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                   Create new NFT contract
                 </Button>
               </Stack> */}
+              <ImagePreviews
+                nFolios={formik.values.nFolios}
+                isPremadeArtURI={
+                  formik.values.baseURI ===
+                    ERC721CreationFormInitVals.baseURI &&
+                  formik.values.suffixURI ===
+                    ERC721CreationFormInitVals.suffixURI
+                }
+              />
+
               <Stack direction="row" justifyContent="left">
                 <Button variant="contained" type="submit" disabled={isDisabled}>
                   Create new collection

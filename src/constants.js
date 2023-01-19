@@ -72,7 +72,7 @@ export const txCodes = [
     level: "error",
   },
 ]
-
+ export const nfkeetees1to12NftStorageBaseURI = "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"
 // export const tokenIds = "0 1 2 3 4 5 6 7 8 9 10 11".split(" ")
 // export const mediaPrefix =
 //   "https://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy.ipfs.nftstorage.link/"
