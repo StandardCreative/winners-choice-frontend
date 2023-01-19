@@ -13,8 +13,7 @@ export function ImagePreviews({ nFolios, isPremadeArtURI }) {
     nFoliosNum = 13
     nImgs = 12
   }
-  let numbers = Array.from({ length: nImgs }, (_, i) => i + 1)
-  console.log({ numbers })
+  let numbers = isPremadeArtURI ? Array.from({ length: nImgs }, (_, i) => i + 1) : []
 
   let previewText
   if (!isPremadeArtURI)
@@ -28,7 +27,6 @@ export function ImagePreviews({ nFolios, isPremadeArtURI }) {
     <>
       <Typography variant="h6">NFT collection preview </Typography>
       {!!previewText && <Typography variant="body1">{previewText}</Typography>}
-      {isPremadeArtURI && !!nImgs && (
         <div
           style={{
             width: "100%",
@@ -44,13 +42,13 @@ export function ImagePreviews({ nFolios, isPremadeArtURI }) {
               key={num}
               src={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
               srcSet={`${nfkeetees1to12NftStorageBaseURI}${num}.jpeg`}
-              style={{objectFit:"cover", width:"64px", height:"64px"}}
+              style={{objectFit:"cover", width:"100px", height:"100px"}}
               alt={`NFKeeTees #${num}`}
               loading="lazy"
             />
           ))}
         </div>
-      )}
+      
     </>
   )
 }
