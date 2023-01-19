@@ -88,6 +88,21 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                     infoText="Enter the number of folios for your collection. \nDefault:\nIf you want to use pre-made sample art, put any number 1-12."
                   />
                 </Stack>
+              </Stack>
+              <ImagePreviews
+                nFolios={formik.values.nFolios}
+                isPremadeArtURI={
+                  formik.values.baseURI ===
+                    ERC721CreationFormInitVals.baseURI &&
+                  formik.values.suffixURI ===
+                    ERC721CreationFormInitVals.suffixURI
+                }
+              />
+              <Stack
+                direction="row"
+                flexWrap="wrap"
+                sx={{ gridColumnGap: "16px" }}
+              >
                 <Stack direction="row" sx={{ maxWidth: "100%" }}>
                   <TextField
                     id="baseURI"
@@ -129,15 +144,6 @@ export const ERC721CreationForm = ({ onSubmit, account, logs, uiMode }) => {
                   Create new NFT contract
                 </Button>
               </Stack> */}
-              <ImagePreviews
-                nFolios={formik.values.nFolios}
-                isPremadeArtURI={
-                  formik.values.baseURI ===
-                    ERC721CreationFormInitVals.baseURI &&
-                  formik.values.suffixURI ===
-                    ERC721CreationFormInitVals.suffixURI
-                }
-              />
 
               <Stack direction="row" justifyContent="left">
                 <Button variant="contained" type="submit" disabled={isDisabled}>
