@@ -47,6 +47,7 @@ const LogEntry = ({ entry, entryNum }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`logentry-${entryNum}`}
         id={`logentry-${entryNum}`}
+        sx={{justifyContent:"flex-start"}}
       >
         <CustomLink href={etherscanHref} target="_blank" rel="noopener">
           {etherscanLinkTxt}
@@ -57,7 +58,6 @@ const LogEntry = ({ entry, entryNum }) => {
       <AccordionDetails>
         <Stack gap="16px">
           {params.map(([descr, val], ind) => {
-            console.log(typeof val);
             if (!Array.isArray(val))
               return <Typography key={ind}>{`${descr}: ${val}`}</Typography>
             return (

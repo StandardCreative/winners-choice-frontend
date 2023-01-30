@@ -45,8 +45,8 @@ const LogEntryForElement = ({ entry, entryNum }) => {
     <Accordion>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls={`logentry-${entryNum}`}
-        id={`logentry-${entryNum}`}
+        aria-controls={`logentry-elm-${entryNum}`}
+        id={`logentry-elm-${entryNum}`}
       >
         <CustomLink href={etherscanHref} target="_blank" rel="noopener">
           {etherscanLinkTxt}

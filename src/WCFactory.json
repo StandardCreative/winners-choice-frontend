@@ -9,13 +9,13 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "curNFTaddress",
+          "name": "nftAddress",
           "type": "address"
         },
         {
           "indexed": false,
           "internalType": "address",
-          "name": "curWCCaddress",
+          "name": "wccAdress",
           "type": "address"
         }
       ],
@@ -37,7 +37,7 @@
     },
     {
       "inputs": [],
-      "name": "curNFTaddress",
+      "name": "nftAddress",
       "outputs": [
         {
           "internalType": "address",
@@ -50,7 +50,7 @@
     },
     {
       "inputs": [],
-      "name": "curWCCaddress",
+      "name": "wccAdress",
       "outputs": [
         {
           "internalType": "address",

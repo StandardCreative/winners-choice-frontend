@@ -92,7 +92,7 @@ export const getMetadataAndOwners = async (
   setUnlockTime,
   userAddr
 ) => {
-  console.log({setUnlockTime, userAddr});
+  console.log({ setUnlockTime, userAddr })
   await getUnlockTime(wccAddr, setUnlockTime, userAddr)
   await getMetadata(wccAddr, setMetadatas, setNFolios)
   await getOwners(wccAddr, setNftOwners)
@@ -103,23 +103,26 @@ export const getUnlockTimeAndOwners = async (
   setUnlockTime,
   userAddr
 ) => {
-  
   await getUnlockTime(wccAddr, setUnlockTime, userAddr)
   await getOwners(wccAddr, setNftOwners)
 }
 
 export const getUnlockTime = async (wccAddr, setUnlockTime, userAddr) => {
-  console.log({setUnlockTime, userAddr});
+  console.log({ setUnlockTime, userAddr })
   if (wccAddr === cfg.WCC_ADDR_IF_WCF_HASNT_DEPLOYED_WCC_YET) {
     setUnlockTime(cfg.PLACEHOLDER_UNLOCK_TIME)
     return
   }
   try {
     console.log("fetching unlock time")
-    const unlockTime = await sendReadTx("getUnlockTimestamp", {userAddr}, wccAddr)
+    const unlockTime = await sendReadTx(
+      "getUnlockTimestamp",
+      { userAddr },
+      wccAddr
+    )
     setUnlockTime(unlockTime)
-  } catch(e){
-    console.log(e);
+  } catch (e) {
+    console.log(e)
   }
 }
 
@@ -225,13 +228,15 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
         resPromise = getContractInstance(wccAddr).getAllOwners()
         break
       case "getWCCaddress":
-        resPromise = getWCFContractInstance().curWCCaddress()
+        resPromise = getWCFContractInstance().wccAdress()
         break
       case "nFolios":
         resPromise = getContractInstance(wccAddr).nFolios()
         break
       case "getUnlockTimestamp":
-        resPromise=getContractInstance(wccAddr).getUnlockTimestamp(vals.userAddr)
+        resPromise = getContractInstance(wccAddr).getUnlockTimestamp(
+          vals.userAddr
+        )
         break
       case "getAllTokenURIs":
         resPromise = getContractInstance(wccAddr).getAllTokenURIs()
@@ -334,16 +339,16 @@ export const sendTx = async (funcName, vals, dataBundle, enqueueSnackbar) => {
       case "makeNewWCC":
         eventData = receipt.events[0].args
         console.log({ eventData })
-        dataBundle.wcc.current = eventData.curWCCaddress
+        dataBundle.wcc.current = eventData.wccAdress
         if (cfg.showMsgsInBrowserAlerts)
-          alert(`Deployed new WCC contract at ${eventData.curWCCaddress}.
+          alert(`Deployed new WCC contract at ${eventData.wccAdress}.
       
-The associated NFT contract is ${eventData.curNFTaddress}
+The associated NFT contract is ${eventData.nftAddress}
 
 The UI will be reset to interact with these new contracts.`)
 
         dataBundle.setNftAddr(eventData.createdNFTaddress)
-        logEntry.deployedAddr = eventData.curWCCaddress
+        logEntry.deployedAddr = eventData.wccAdress
         break
 
       case "makeNewERC721":
