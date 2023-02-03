@@ -228,7 +228,7 @@ export const sendReadTx = async (funcName, vals, wccAddr) => {
         resPromise = getContractInstance(wccAddr).getAllOwners()
         break
       case "getWCCaddress":
-        resPromise = getWCFContractInstance().wccAdress()
+        resPromise = getWCFContractInstance().wccAddress()
         break
       case "nFolios":
         resPromise = getContractInstance(wccAddr).nFolios()
@@ -339,16 +339,16 @@ export const sendTx = async (funcName, vals, dataBundle, enqueueSnackbar) => {
       case "makeNewWCC":
         eventData = receipt.events[0].args
         console.log({ eventData })
-        dataBundle.wcc.current = eventData.wccAdress
+        dataBundle.wcc.current = eventData.wccAddress
         if (cfg.showMsgsInBrowserAlerts)
-          alert(`Deployed new WCC contract at ${eventData.wccAdress}.
+          alert(`Deployed new WCC contract at ${eventData.wccAddress}.
       
 The associated NFT contract is ${eventData.nftAddress}
 
 The UI will be reset to interact with these new contracts.`)
 
         dataBundle.setNftAddr(eventData.createdNFTaddress)
-        logEntry.deployedAddr = eventData.wccAdress
+        logEntry.deployedAddr = eventData.wccAddress
         break
 
       case "makeNewERC721":
