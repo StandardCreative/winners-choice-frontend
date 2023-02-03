@@ -1,8 +1,8 @@
 import { ethers } from "ethers"
 import * as cfg from "../constants"
-import contractData from "../contractArtifact"
 import { shortenHash } from "../utils/utils"
-import WCFactoryContractData from "../WCFactory"
+import contractData from "../WCController"
+import WCDeployerContractData from "../WCDeployer"
 
 const getContractInstance = (wccAddr) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -23,8 +23,8 @@ const getWCFContractInstance = () => {
   if (!network) throw new Error("unsupported network")
 
   return new ethers.Contract(
-    network.WCFactoryAddress,
-    WCFactoryContractData.abi,
+    network.WCDeployerAddress,
+    WCDeployerContractData.abi,
     provider.getSigner()
   )
 }

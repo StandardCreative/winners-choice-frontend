@@ -1,6 +1,6 @@
 import { Formik } from "formik"
 import { validateAddr } from "../utils/utils"
-import WCFactoryFormInner from "./WCFactoryFormInner"
+import WCDeployerFormInner from "./WCDeployerFormInner"
 
 const validate = (values) => {
   console.log("validate")
@@ -16,9 +16,15 @@ const validate = (values) => {
   return errors
 }
 
-export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs, uiMode }) => {
-  const WCFactoryFormInitVals = {
-    whitelist:  account ? (account + ", " + account) : "", //same in useEffect in inner comp
+export const WCDeployerForm = ({
+  onSubmit,
+  account,
+  nftAddr,
+  logs,
+  uiMode,
+}) => {
+  const WCDeployerFormInitVals = {
+    whitelist: account ? account + ", " + account : "", //same in useEffect in inner comp
     nftAddr: nftAddr,
     unlockInterval: "2",
   }
@@ -26,7 +32,7 @@ export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs, uiMode }) => {
   return (
     <>
       <Formik
-        initialValues={WCFactoryFormInitVals}
+        initialValues={WCDeployerFormInitVals}
         validate={validate}
         onSubmit={(values, actions) => {
           console.log("submitting")
@@ -35,7 +41,12 @@ export const WCFactoryForm = ({ onSubmit, account, nftAddr, logs, uiMode }) => {
         }}
       >
         {/* https://stackoverflow.com/questions/66235334/formik-setfieldvalue-inside-a-function */}
-        <WCFactoryFormInner account={account} nftAddr={nftAddr} logs={logs} uiMode={uiMode}/>
+        <WCDeployerFormInner
+          account={account}
+          nftAddr={nftAddr}
+          logs={logs}
+          uiMode={uiMode}
+        />
       </Formik>
     </>
   )

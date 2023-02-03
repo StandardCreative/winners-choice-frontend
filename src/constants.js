@@ -1,5 +1,6 @@
-//DEPLOYED WCFACTORY ADDRESS ON GOERLI
-const deployedGoerliWCFactoryAddr = "0x822d546Eb482b1767C6A4F319624600BE4C10e9E"
+//WCDEPLOYER CONTRACT ADDRESS ON GOERLI
+const deployedGoerliWCDeployerAddr =
+  "0x822d546Eb482b1767C6A4F319624600BE4C10e9E"
 
 //SETTINGS
 export const showERC721CreationPanel = true
@@ -7,7 +8,7 @@ export const showWCCreationPanel = true
 export const showMsgsInBrowserAlerts = false
 export const isDevUImode = true //show tx history locally
 export const showShowInstructionsCheckbox = true
-export const infoToolTipLevel = 0 
+export const infoToolTipLevel = 0
 
 //LESS IMPORTANT SETTINGS
 export const DUR_SNACKBAR_TX = 180000 //in ms here, in my ts app it was in seconds for some reason
@@ -23,14 +24,14 @@ export const supportedNetworks = [
     name: "Goerli",
     id: "5",
     // contractAddress: "0x3aF9F0408456b4296A74ad42bAc3879750aC1842", //irrelevant for resettable demo
-    WCFactoryAddress: deployedGoerliWCFactoryAddr // prev "0x19d9B97D680a9c734535B370a6618392E8B3D2aC", //prev "0x84E28e01358e666684B895D7aAdDFC5299249d09", //prev 0xb71b27b14ca7cee82ca214c1332765a727497762", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
+    WCDeployerAddress: deployedGoerliWCDeployerAddr, // prev "0x19d9B97D680a9c734535B370a6618392E8B3D2aC", //prev "0x84E28e01358e666684B895D7aAdDFC5299249d09", //prev 0xb71b27b14ca7cee82ca214c1332765a727497762", //prev "0x876E416bab2E0E430245C98f9d0edDc569423717",
     //v1 "0x83292B67BaBF3E141c58526F0a26FB33F4A42Cb0",
   },
   {
     name: "Local (with chain id 1337)",
     id: "1337",
     //contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", // irrelevant
-    WCFactoryAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    WCDeployerAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
   },
 ]
 
@@ -74,7 +75,8 @@ export const txCodes = [
     level: "error",
   },
 ]
- export const nfkeetees1to12NftStorageBaseURI = "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"
+export const nfkeetees1to12NftStorageBaseURI =
+  "https://bafybeibl7guejya2dldrsqpsug7osxix32qyr2t7ggxrzt6ihbkirwhkrq.ipfs.nftstorage.link/"
 // export const tokenIds = "0 1 2 3 4 5 6 7 8 9 10 11".split(" ")
 // export const mediaPrefix =
 //   "https://bafybeid2eloamo5bbswztq5wp4t7xf42qhn2lfwth4ejdjiy74yvm5fgvy.ipfs.nftstorage.link/"

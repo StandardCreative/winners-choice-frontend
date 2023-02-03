@@ -12,7 +12,7 @@ import LogHistory from "./components/LogHistory"
 import { MintForm } from "./components/MintForm"
 import NFTGallery from "./components/NFTGallery"
 import { ShowInstructionsCheckBox } from "./components/ShowInstructionsCheckBox"
-import { WCFactoryForm } from "./components/WCFactoryForm"
+import { WCDeployerForm } from "./components/WCDeployerForm"
 import {
   PLACEHOLDER_UNLOCK_TIME,
   showShowInstructionsCheckbox,
@@ -85,7 +85,7 @@ function App() {
       .sendTx("makeNewERC721", { ...vals }, dataBundle, enqueueSnackbar)
       .then((nftAddr) => {})
   }
-  const wcFactoryCb = (vals) => {
+  const wcDeployerCb = (vals) => {
     vals.users = vals.whitelist.split(",").map((st) => st.trim())
     if (!vals.unlockInterval) vals.unlockInterval = "2"
 
@@ -149,21 +149,27 @@ function App() {
         setNFolios={setNFolios}
         setUnlockTime={setUnlockTime}
       />
-      {uiMode.showInstructions  && <div style={{ margin: "12px 32px 0px 32px" }}>
-        <Typography textAlign="center" fontWeight="bold">
-          In Winner's Choice (WC), specific wallet addresses (called winners) are
-          unlocked, in priority order, to mint an NFT of their
-          choice. 
-          {/* In Winner's Choice (WC), whitelisted addresses (aka winners) are unlocked one by one in
+      {uiMode.showInstructions && (
+        <div style={{ margin: "12px 32px 0px 32px" }}>
+          <Typography textAlign="center" fontWeight="bold">
+            In Winner's Choice (WC), specific wallet addresses (called winners)
+            are unlocked, in priority order, to mint an NFT of their choice.
+            {/* In Winner's Choice (WC), whitelisted addresses (aka winners) are unlocked one by one in
           the order of priority to mint an NFT of their choice. */}
-        </Typography>
-        <Typography textAlign="center" fontWeight="bold">
-          The first address on the 'winners list' is unlocked immediately, the second one after a
-          delay D, the third one after 2D, etc.
-        </Typography>
-      </div>}
+          </Typography>
+          <Typography textAlign="center" fontWeight="bold">
+            The first address on the 'winners list' is unlocked immediately, the
+            second one after a delay D, the third one after 2D, etc.
+          </Typography>
+        </div>
+      )}
       {showShowInstructionsCheckbox && (
-        <ShowInstructionsCheckBox uiMode={uiMode} setUiMode={setUiMode} account={accounts[0]} logs={logs}/>
+        <ShowInstructionsCheckBox
+          uiMode={uiMode}
+          setUiMode={setUiMode}
+          account={accounts[0]}
+          logs={logs}
+        />
       )}
       {uiMode.page === "Admin" && (
         <ERC721CreationForm
@@ -175,8 +181,8 @@ function App() {
         />
       )}
       {uiMode.page === "Admin" && (
-        <WCFactoryForm
-          onSubmit={wcFactoryCb}
+        <WCDeployerForm
+          onSubmit={wcDeployerCb}
           account={accounts[0]}
           // setNftOwners={setNftOwners}
           nftAddr={dataBundle.nftAddr}

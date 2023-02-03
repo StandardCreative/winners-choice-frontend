@@ -10,7 +10,7 @@ import InstructionsBox from "./InstructionsBox"
 import LogHistoryForElement from "./LogHistoryForElement"
 import PanelTitle from "./PanelTitle"
 
-const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
+const WCDeployerFormInner = ({ account, nftAddr, logs, uiMode }) => {
   // returns all values and methods from your Formik tag
   const formik = useFormikContext()
   const [showErrs, setShowErrs] = useState(false)
@@ -137,4 +137,4 @@ const WCFactoryFormInner = ({ account, nftAddr, logs, uiMode }) => {
   )
 }
 
-export default WCFactoryFormInner
+export default WCDeployerFormInner
