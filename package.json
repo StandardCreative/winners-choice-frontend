@@ -1,7 +1,7 @@
 {
   "name": "winners-choice-frontend",
   "version": "0.1.0",
-  "homepage": "https://reasonmethis.github.io/winners-choice-frontend",
+  "homepage": "https://StandardCreative.github.io/winners-choice-frontend",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
